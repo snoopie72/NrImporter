@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{C3980820-327E-47FE-9D94-6C422A9CFBC0}"
 	ProjectSection(SolutionItems) = preProject
@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{C39808
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImportLibrary", "ImportLibrary\ImportLibrary.csproj", "{5EB4110B-1AF7-475E-8000-95470099AA33}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NR-Resultat_Import", "NR-Resultat_Import\NR-Resultat_Import.csproj", "{B54A9220-2083-42FD-853E-A933F4D71671}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,6 +24,10 @@ Global
 		{5EB4110B-1AF7-475E-8000-95470099AA33}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5EB4110B-1AF7-475E-8000-95470099AA33}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5EB4110B-1AF7-475E-8000-95470099AA33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B54A9220-2083-42FD-853E-A933F4D71671}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B54A9220-2083-42FD-853E-A933F4D71671}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B54A9220-2083-42FD-853E-A933F4D71671}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B54A9220-2083-42FD-853E-A933F4D71671}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
