@@ -14,6 +14,11 @@ namespace Northernrunners.ImportLibrary.Service
             throw new NotImplementedException();
         }
 
+        public ICollection<Event> GetEvents(string name, int year)
+        {
+            throw new NotImplementedException();
+        }
+
         public ICollection<Event> GetEvents(string name)
         {
             throw new NotImplementedException();

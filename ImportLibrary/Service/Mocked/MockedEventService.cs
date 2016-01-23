@@ -6,6 +6,8 @@ namespace Northernrunners.ImportLibrary.Service.Mocked
 {
     public class MockedEventService:IEventService
     {
+
+
         public ICollection<Event> GetEvents(DateTime @from, DateTime to)
         {
             throw new NotImplementedException();
