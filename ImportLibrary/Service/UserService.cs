@@ -18,5 +18,10 @@ namespace Northernrunners.ImportLibrary.Service
         {
             throw new NotImplementedException();
         }
+
+        public ICollection<User> GetAllUsers()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
