@@ -1,5 +1,0 @@
-C:\Users\KaiHugo\Documents\Kode\NrImporter\ImportLibrary\obj\Debug\ImportLibrary.csprojResolveAssemblyReference.cache
-C:\Users\KaiHugo\Documents\Kode\NrImporter\ImportLibrary\bin\Debug\ImportLibrary.dll
-C:\Users\KaiHugo\Documents\Kode\NrImporter\ImportLibrary\bin\Debug\ImportLibrary.pdb
-C:\Users\KaiHugo\Documents\Kode\NrImporter\ImportLibrary\obj\Debug\ImportLibrary.dll
-C:\Users\KaiHugo\Documents\Kode\NrImporter\ImportLibrary\obj\Debug\ImportLibrary.pdb
