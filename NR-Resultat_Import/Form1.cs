@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Northernrunners.ImportLibrary.Service.Mocked;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -19,7 +20,7 @@ namespace NR_Resultat_Import
 
         private void button1_Click(object sender, EventArgs e)
         {
-            openFileDialog1.DefaultExt = ".csv";
+            openFileDialog1.DefaultExt = ".csv"; //virker ikke
             openFileDialog1.ShowDialog();
             
         }
@@ -27,6 +28,12 @@ namespace NR_Resultat_Import
         private void openFileDialog1_FileOk(object sender, CancelEventArgs e)
         {
             textBox1.Text = openFileDialog1.FileName;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            var x = new MockedEventService();
+            textBox1.Text = x.GetEvents("adsf", 2016).ToList().FirstOrDefault().Id1.ToString();
         }
     }
 }

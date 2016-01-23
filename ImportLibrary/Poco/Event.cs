@@ -8,6 +8,19 @@ namespace Northernrunners.ImportLibrary.Poco
 {
     public class Event
     {
+        int Id;
 
+        public int Id1
+        {
+            get
+            {
+                return Id;
+            }
+
+            set
+            {
+                Id = value;
+            }
+        }
     }
 }

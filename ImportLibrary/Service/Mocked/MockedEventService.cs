@@ -15,7 +15,11 @@ namespace Northernrunners.ImportLibrary.Service.Mocked
 
         public ICollection<Event> GetEvents(string name, int year)
         {
-            throw new NotImplementedException();
+            List<Event> eventer = new List<Event>();
+            var ev = new Event();
+            ev.Id1 = 1;
+            eventer.Add(ev);
+            return eventer;
         }
 
         public ICollection<Event> GetEvents(string name)
