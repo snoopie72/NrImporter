@@ -19,6 +19,9 @@ namespace Northernrunners.ImportLibrary.Service.Mocked
             var ev = new Event();
             ev.Id1 = 1;
             eventer.Add(ev);
+            var ev2 = new Event();
+            ev2.Id1 = 3;
+            eventer.Add(ev2);
             return eventer;
         }
 

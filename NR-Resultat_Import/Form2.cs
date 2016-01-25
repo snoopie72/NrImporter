@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Northernrunners.ImportLibrary.Service.Mocked;
+using Northernrunners.ImportLibrary.Poco;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -21,6 +23,21 @@ namespace NR_Resultat_Import
             var bindingList = new BindingList<Deltaker>(deltakere);
             var source = new BindingSource(bindingList, null);
             dataGridView1.DataSource = source;
+
+            if (deltakere.First() != null)
+            {
+                var x = new MockedEventService();
+                //textBox1.Text = x.GetEvents("adsf", 2016).ToList().FirstOrDefault().Id1.ToString();
+                List<Event> eventer = x.GetEvents("adsf", 2016).ToList();
+                if (eventer.Count == 1)
+                {
+                    label2.Text = String.Format("ID={0}", eventer.First().Id1);
+                }
+                else
+                {
+                    label2.Text = "Velg event...";
+                }
+            }
         }
     }
 }
