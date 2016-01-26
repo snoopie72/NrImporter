@@ -16,12 +16,27 @@ namespace Northernrunners.ImportLibrary.Service.Mocked
         public ICollection<Event> GetEvents(string name, int year)
         {
             List<Event> eventer = new List<Event>();
-            var ev = new Event();
-            ev.Id1 = 1;
-            eventer.Add(ev);
-            var ev2 = new Event();
-            ev2.Id1 = 3;
+            var ev1 = new Event()
+            {
+                Id = 1,
+                Date = new DateTime(2015, 4, 14),
+                Name = "Folkeparken"
+            };
+            var ev2 = new Event()
+            {
+                Id = 1,
+                Date = new DateTime(2015, 5, 11),
+                Name = "Krokenmila"
+            };
+            var ev3 = new Event()
+            {
+                Id = 1,
+                Date = new DateTime(2015, 6, 8),
+                Name = "Folkeparken"
+            };
+            eventer.Add(ev1);
             eventer.Add(ev2);
+            eventer.Add(ev3);
             return eventer;
         }
 

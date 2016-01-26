@@ -28,14 +28,18 @@ namespace NR_Resultat_Import
             {
                 var x = new MockedEventService();
                 //textBox1.Text = x.GetEvents("adsf", 2016).ToList().FirstOrDefault().Id1.ToString();
-                List<Event> eventer = x.GetEvents("adsf", 2016).ToList();
+                List<Event> eventer = x.GetEvents("adsf", DateTime.Now.Year).ToList();
                 if (eventer.Count == 1)
                 {
-                    label2.Text = String.Format("ID={0}", eventer.First().Id1);
+                    label2.Text = String.Format("ID={0}", eventer.First().Id);
                 }
                 else
                 {
                     label2.Text = "Velg event...";
+                    listBox1.Items.Clear();
+                    listBox1.DataSource = eventer;
+                    listBox1.DisplayMember = "DisplayName";
+                    listBox1.ValueMember = "Id";
                 }
             }
         }

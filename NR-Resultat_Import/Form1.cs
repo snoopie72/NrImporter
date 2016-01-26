@@ -56,6 +56,7 @@ namespace NR_Resultat_Import
             }
             Form form2 = new Form2(deltakere);
             form2.ShowDialog(this);
+            //this.Close();
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
