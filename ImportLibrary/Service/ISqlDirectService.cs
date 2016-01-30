@@ -17,14 +17,7 @@ namespace Northernrunners.ImportLibrary.Service
         /// 
         [Obsolete("RunCommandsInSingleTransaction is deprecated")]
         ICollection<ICollection<Dictionary<string, object>>> RunCommandsInSingleTransaction(ICollection<string> statements);
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="query"></param>
-        /// <returns></returns>
-        [Obsolete("RunCommandsInSingleTransaction is deprecated")]
-        ICollection<Dictionary<string, object>> RunCommand(String query);
-
+        
         /// <summary>
         /// 
         /// </summary>

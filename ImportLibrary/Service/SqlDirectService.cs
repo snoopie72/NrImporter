@@ -18,6 +18,7 @@ namespace Northernrunners.ImportLibrary.Service
         public SqlDirectService(string connectionString)
         {
             _connectionString = connectionString;
+            Console.WriteLine(_connectionString);
         }
 
         /// <summary>
@@ -74,23 +75,7 @@ namespace Northernrunners.ImportLibrary.Service
             return returnCollection;
         }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="query"></param>
-        /// <returns></returns>
-        /// <exception cref="Exception"></exception>
-        public ICollection<Dictionary<string, object>> RunCommand(string query)
-        {
-            var list = new List<string> {query};
-            var resultFromQuery = RunCommandsInSingleTransaction(list);
-            if (resultFromQuery.Count != 1)
-            {
-                throw new Exception("Invalid results");
-            }
-            var iterator = resultFromQuery.GetEnumerator();
-            iterator.MoveNext();
-            return iterator.Current;
-        }
+        
 
         public ICollection<Dictionary<string, object>> RunCommand(Query query)
         {
@@ -141,6 +126,7 @@ namespace Northernrunners.ImportLibrary.Service
                                 //LogEventBusSingleton.Instance.Debug("Result", DictionaryToString(dictionary));
                                 coll.Add(dictionary);
                             }
+                            reader.Close();
                         }
                         returnCollection.Add(coll);
                     }

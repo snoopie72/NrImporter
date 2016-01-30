@@ -8,75 +8,14 @@ namespace NR_Resultat_Import
 {
     public class Deltaker
     {
-        string name;
-        string gender;
-        string time;
-        string stage;
-        string place;
+        public string Name { get; set; }
 
-        public string Name
-        {
-            get
-            {
-                return name;
-            }
+        public string Gender { get; set; }
 
-            set
-            {
-                name = value;
-            }
-        }
+        public string Time { get; set; }
 
-        public string Gender
-        {
-            get
-            {
-                return gender;
-            }
+        public string Stage { get; set; }
 
-            set
-            {
-                gender = value;
-            }
-        }
-
-        public string Time
-        {
-            get
-            {
-                return time;
-            }
-
-            set
-            {
-                time = value;
-            }
-        }
-
-        public string Stage
-        {
-            get
-            {
-                return stage;
-            }
-
-            set
-            {
-                stage = value;
-            }
-        }
-
-        public string Place
-        {
-            get
-            {
-                return place;
-            }
-
-            set
-            {
-                place = value;
-            }
-        }
+        public string Place { get; set; }
     }
 }

@@ -13,5 +13,7 @@ namespace Northernrunners.ImportLibrary.Service
 
         ICollection<Event> GetEvents(string name, int year);
         void AddEventResults(EventResult eventResult);
+
+        ICollection<Event> GetEvents(string name);
     }
 }
