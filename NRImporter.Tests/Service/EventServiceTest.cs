@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -17,14 +19,17 @@ namespace NRImporter.Tests.Service
     internal class EventServiceTest
     {
         private EventService _service;
-        private UserHandler _userHandler;
+        private UserService _userService;
         private Assembly _assembly;
         [SetUp]
         public void Setup()
         {
-            _service = new EventService(new SqlDirectService(ConfigurationManager.ConnectionStrings["db"].ConnectionString), new ResultDataService(new SqlDirectService(ConfigurationManager.ConnectionStrings["db"].ConnectionString)));
+            _service = new EventService(new ResultDataService(new SqlDirectService(ConfigurationManager.ConnectionStrings["db"].ConnectionString)));
             _assembly = Assembly.GetExecutingAssembly();
-            _userHandler = new UserHandler(new UserService(new SqlDirectService(ConfigurationManager.ConnectionStrings["db"].ConnectionString)));
+            _userService =
+                new UserService(
+                    new ResultDataService(
+                        new SqlDirectService(ConfigurationManager.ConnectionStrings["db"].ConnectionString)));
         }
 
         [Test]
@@ -38,40 +43,15 @@ namespace NRImporter.Tests.Service
         [Test]
         public void AddResults()
         {
-            var resource = "NRImporter.Tests.Resources.Folkeparken1404.csv";
-            var filter = "Northern Runners";
+            const string resource = "NRImporter.Tests.Resources.Folkeparken1404.csv";
+            const string filter = "Northern Runners";
 
+            var handler = new EventResultHandler(_userService, _service);
             Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("no-NO");
             using (var stream = _assembly.GetManifestResourceStream(resource))
             {
-                var eventResult = new EventResult();
-                eventResult.Event = new Event { Id = 4 };
                 var deltakere = ExcelLoader.LoadRaceResult(stream, filter);
-                var usernames = deltakere.Select(deltaker => new User {Name = deltaker.Name, Male = deltaker.Gender.Equals("m")}).ToList();
-                var usersFromDb = _userHandler.LoadUserDetails(usernames);
-                Console.WriteLine("deltakere: " + deltakere.Count);
-                Console.WriteLine("db: " + usersFromDb.Count);
-
-                var results = new List<Result>();
-                for (int i = 0; i < deltakere.Count; i++)
-                {
-                    var deltaker = deltakere.ToList()[i];
-                    var result = new Result
-                    {
-                        User = usersFromDb.ToList()[i],
-                        Position = Convert.ToInt32(deltaker.Place)
-                    };
-                    var time = deltaker.Time.Substring(0, deltaker.Time.IndexOf(".", StringComparison.Ordinal));
-                    if (time.Length < 6)
-                    {
-                        time = "0:" + time;
-                    }
-                    result.Time = TimeSpan.Parse(time);                    
-                    results.Add(result);
-                        
-                }
-                eventResult.Results = results;
-                _service.AddEventResults(eventResult);
+                handler.InsertResultInEvent(deltakere, new Event { Id = 4 });
                 
             }
             

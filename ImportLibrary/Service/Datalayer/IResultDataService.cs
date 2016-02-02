@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Northernrunners.ImportLibrary.Dto;
+using Northernrunners.ImportLibrary.Poco;
 
 namespace Northernrunners.ImportLibrary.Service.Datalayer
 {
@@ -11,5 +12,16 @@ namespace Northernrunners.ImportLibrary.Service.Datalayer
     {
         void AddEventResults(EventResultDto eventResultDto);
 
+        void AddEventResults(ICollection<EventResultDto> eventResultsDto);
+        ICollection<UserDto> GetAllUsers();
+
+        void AddUser(UserDto user);
+        void AddTempResult(TempResultDto tempResultDto);
+
+        ICollection<TempResultDto> GetTempResults();
+
+        void DeleteTempResult(TempResultDto tempResultDto);
+
+        ICollection<Event> GetAllEvents();
     }
 }

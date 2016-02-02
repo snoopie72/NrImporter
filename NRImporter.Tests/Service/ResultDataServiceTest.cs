@@ -29,6 +29,18 @@ namespace NRImporter.Tests.Service
             _dataService.AddEventResults(eventResult);
         }
 
+        [Test]
+        public void TestAddTempResult()
+        {
+            var tempResult = new TempResultDto
+            {
+                Data = "tttt",
+                UserId = 1,
+                Registered = DateTime.Now
+            };
+            _dataService.AddTempResult(tempResult);
+        }
+
         private static EventResultDto GetEventResult()
         {
             //var eventResult = new EventResult();
@@ -40,7 +52,7 @@ namespace NRImporter.Tests.Service
                 DateCreated = DateTime.Now,
                 EventId = 2,
                 Position = 23,
-                Gender = 'F',
+                Gender = "F",
                 Time = 2900000,
                 UserId = 3
             };

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Northernrunners.ImportLibrary.Poco;
 using Northernrunners.ImportLibrary.Service;
+using Northernrunners.ImportLibrary.Service.Datalayer;
 using NUnit.Framework;
 
 namespace NRImporter.Tests.Service
@@ -19,7 +20,7 @@ namespace NRImporter.Tests.Service
         [SetUp]
         public void Setup()
         {
-            _userService = new UserService(new SqlDirectService(ConfigurationManager.ConnectionStrings["db"].ConnectionString));
+            _userService = new UserService(new ResultDataService(new SqlDirectService(ConfigurationManager.ConnectionStrings["db"].ConnectionString)));
         }
 
         [Test]
@@ -45,9 +46,11 @@ namespace NRImporter.Tests.Service
                 Name = "John Doe",
                 Email = "jdoe@gmail.com",
                 DateOfBirth = DateTime.MinValue,
-                Male = true
+                Gender = "M"
             };
-            user = _userService.AddUser(user);
+            _userService.AddUser(user);
+
+            user = _userService.FindUser(user.Name);
             Assert.IsNotNull(user);
         }
     }

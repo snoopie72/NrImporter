@@ -14,7 +14,7 @@ namespace Northernrunners.ImportLibrary.Dto
         public int Time { get; set; }
         public int Position { get; set; }
         public string AgeCategory { get; set; }
-        public char Gender { get; set; }
+        public string Gender { get; set; }
         public double AgeGrade { get; set; }
     }
 }

@@ -44,7 +44,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dto\EventDto.cs" />
     <Compile Include="Dto\EventResultDto.cs" />
+    <Compile Include="Dto\TempResultDto.cs" />
+    <Compile Include="Dto\UserDto.cs" />
     <Compile Include="Excel\ExcelLoader.cs" />
     <Compile Include="Poco\Deltaker.cs" />
     <Compile Include="Poco\Event.cs" />
@@ -54,20 +57,19 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\Datalayer\IResultDataService.cs" />
     <Compile Include="Service\Datalayer\ResultDataService.cs" />
+    <Compile Include="Service\EventResultHandler.cs" />
     <Compile Include="Service\EventService.cs" />
     <Compile Include="Service\Helper\Parameter.cs" />
     <Compile Include="Service\Helper\Query.cs" />
     <Compile Include="Service\IEventService.cs" />
     <Compile Include="Service\Datalayer\ISqlDirectService.cs" />
     <Compile Include="Service\ITemporaryResultService.cs" />
-    <Compile Include="Service\IUserHandler.cs" />
     <Compile Include="Service\IUserService.cs" />
     <Compile Include="Service\Mocked\MockedEventService.cs" />
     <Compile Include="Service\Mocked\MockedTemporaryEventResultService.cs" />
     <Compile Include="Service\Mocked\MockedUserService.cs" />
     <Compile Include="Service\Datalayer\SqlDirectService.cs" />
     <Compile Include="Service\TemporaryResultService.cs" />
-    <Compile Include="Service\UserHandler.cs" />
     <Compile Include="Service\UserService.cs" />
     <Compile Include="Utils\Tools.cs" />
   </ItemGroup>
@@ -83,6 +85,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\CreateEventResultTemplate.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\GetAllUsersTemplate.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\CreateTempResult.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

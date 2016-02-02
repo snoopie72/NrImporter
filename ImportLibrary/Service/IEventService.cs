@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Northernrunners.ImportLibrary.Dto;
 using Northernrunners.ImportLibrary.Poco;
+using NR_Resultat_Import;
 
 namespace Northernrunners.ImportLibrary.Service
 {
@@ -16,5 +17,7 @@ namespace Northernrunners.ImportLibrary.Service
         void AddEventResults(EventResult eventResult);
 
         ICollection<Event> GetEvents(string name);
+
+      
     }
 }

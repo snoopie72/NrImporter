@@ -1,27 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Northernrunners.ImportLibrary.Dto;
 using Northernrunners.ImportLibrary.Poco;
 using Northernrunners.ImportLibrary.Service.Datalayer;
-using Northernrunners.ImportLibrary.Service.Helper;
 using Northernrunners.ImportLibrary.Utils;
+using NR_Resultat_Import;
 
 namespace Northernrunners.ImportLibrary.Service
 {
     public class EventService:IEventService
     {
-        private readonly ISqlDirectService _sqlDirectService;
-        private readonly Assembly _assembly;
         private readonly IResultDataService _resultDataService;
-        public EventService(ISqlDirectService sqlDirectService, IResultDataService resultDataService)
+        public EventService(IResultDataService resultDataService)
         {
-            _sqlDirectService = sqlDirectService;
             _resultDataService = resultDataService;
-            _assembly = Assembly.GetAssembly(typeof(EventService));
         }
     
 
@@ -40,6 +33,8 @@ namespace Northernrunners.ImportLibrary.Service
             return GetAllEvents().Where(t => t.Name.Contains(name)).ToList();            
         }
 
+        
+
         public Event GetEvent(int eventId)
         {
             var events = GetAllEvents();
@@ -48,12 +43,9 @@ namespace Northernrunners.ImportLibrary.Service
 
         public void AddEventResults(EventResult eventResult)
         {
+            var query = new List<EventResultDto>();
             foreach (var result in eventResult.Results)
             {
-                //todo: Noe feil her.. bruker skal ikke kunne være tom.
-                if (result.User != null && result.User.Id > 0)
-                {
-                    var gender = 'M';
                     var time = CalculateTime(result.Time);
                     var eventResultDto = new EventResultDto
                     {
@@ -61,18 +53,30 @@ namespace Northernrunners.ImportLibrary.Service
                         AgeCategory = GetAgeCategory(result.User),
                         AgeGrade = GetAgeGrade(result.User),
                         DateCreated = DateTime.Now,
-                        Gender = gender,
+                        Gender = result.User.Gender,
                         UserId = result.User.Id,
                         //TODO: Fikse time.. ligger i resultat
                         Time = time,
                         Position = result.Position
                     };
-                    _resultDataService.AddEventResults(eventResultDto);
+                if (result.User.DateOfBirth.Equals(DateTime.MinValue))
+                {
+                    var dataObject = Tools.Serialize(eventResultDto);
+                    var tempResult = new TempResultDto
+                    {
+                        Data = dataObject,
+                        Registered = DateTime.Now,
+                        UserId = result.User.Id
+                    };
+                    _resultDataService.AddTempResult(tempResult);
                 }
-                //TODO: Må laste inn kjønn korrekt
-                //var gender = result.User.Male ? 'M' : 'F';
-                
+                else
+                {
+                    //_resultDataService.AddEventResults(eventResultDto);
+                    query.Add(eventResultDto);
+                }
             }
+            _resultDataService.AddEventResults(query);
         }
 
         private static int CalculateTime(TimeSpan time)
@@ -91,8 +95,9 @@ namespace Northernrunners.ImportLibrary.Service
 
         private static string GetAgeCategory(User user)
         {
+            Console.WriteLine("User: " + user.Name + " " + user.DateOfBirth);
             var dob = user.DateOfBirth;
-            var age = DateTime.Now.Year - new Random().Next(1945, 1995);
+            var age = DateTime.Now.Year - user.DateOfBirth.Year;
             Console.WriteLine("Age: " + age);
             if (age < 20)
             {
@@ -144,15 +149,9 @@ namespace Northernrunners.ImportLibrary.Service
         }
 
 
-        private ICollection<Event> GetAllEvents()
+        private IEnumerable<Event> GetAllEvents()
         {
-            var sql = "select date, id, name from kai_wpa_event";
-            var query = new Query {Sql = sql};
-            var result = _sqlDirectService.RunCommand(query);
-            return result.Select(item => new Event
-            {
-                Id = (int) item["id"], Date = (DateTime) item["date"], Name = (string) item["name"]
-            }).ToList();
+            return _resultDataService.GetAllEvents();
 
         } 
     }

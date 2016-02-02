@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Northernrunners.ImportLibrary.Poco;
 
@@ -19,7 +20,7 @@ namespace Northernrunners.ImportLibrary.Service.Mocked
             var users = new List<User>();
             var user = new User
             {
-                Male = true,
+                Gender = "M",
                 Name = "Jon-Vidar Schneider",
                 Id = 1
             };
@@ -27,14 +28,14 @@ namespace Northernrunners.ImportLibrary.Service.Mocked
 
             user = new User
             {
-                Male = true,
+                Gender = "M",
                 Id = 2,
                 Name = "Kai Hugo Sørensen"
             };
             users.Add(user);
             user = new User
             {
-                Male = false,
+                Gender = "F",
                 Id = 3,
                 Name = "Sylwia Smiegel"
             };
@@ -43,9 +44,9 @@ namespace Northernrunners.ImportLibrary.Service.Mocked
 
         }
 
-        public User AddUser(User user)
+        public void AddUser(User user)
         {
-            throw new NotImplementedException();
+            
         }
 
         public User FindUser(string name)
@@ -58,6 +59,16 @@ namespace Northernrunners.ImportLibrary.Service.Mocked
             return _users;
             ;
 
+        }
+
+        public void AddUsers(ICollection<User> users)
+        {
+            
+        }
+
+        public ICollection<User> CreateAndGetUsers(ICollection<User> users, StreamWriter writer)
+        {
+            throw new NotImplementedException();
         }
     }
 }

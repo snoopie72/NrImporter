@@ -5,7 +5,7 @@ namespace Northernrunners.ImportLibrary.Poco
     public class User
     {
         public string Name { get; set; }
-        public bool Male { get; set; }
+        public string Gender { get; set; }
 
         public int Id{ get; set; }
 

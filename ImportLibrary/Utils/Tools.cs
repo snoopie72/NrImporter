@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
+using System.Xml.Serialization;
 using Northernrunners.ImportLibrary.Poco;
 
 namespace Northernrunners.ImportLibrary.Utils
@@ -27,14 +29,20 @@ namespace Northernrunners.ImportLibrary.Utils
             return $"{date:dd MMM yyyy}";
         }
 
-        public static object GetCellValueFromColumnHeader(this DataGridViewCellCollection cellCollection, string headerText)
+        public static DateTime ParseDate(string date)
+        {
+            return DateTime.ParseExact(date, "dd MMM yyyy", CultureInfo.GetCultureInfo("no-NO"));
+        }
+
+        public static object GetCellValueFromColumnHeader(this DataGridViewCellCollection cellCollection,
+            string headerText)
         {
             return cellCollection.Cast<DataGridViewCell>().First(c => c.OwningColumn.HeaderText == headerText).Value;
         }
 
         public static void RandomizeDateOfBirth(ICollection<User> users)
         {
-          
+
             var random = new Random();
             foreach (var user in users)
             {
@@ -48,6 +56,18 @@ namespace Northernrunners.ImportLibrary.Utils
             var month = random.Next(1, 12);
             var day = random.Next(1, 28);
             return new DateTime(year, month, day);
+        }
+
+        public static string Serialize<T>(T datatype)
+        {
+            var xsSubmit = new XmlSerializer(typeof (T));
+            using (StringWriter sww = new StringWriter())
+            using (XmlWriter writer = XmlWriter.Create(sww))
+            {
+                xsSubmit.Serialize(writer, datatype);
+                var xml = sww.ToString(); // Your XML
+                return xml;
+            }
         }
     }
 }

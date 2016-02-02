@@ -34,10 +34,14 @@ namespace NR_Resultat_Import
 
         private void button2_Click(object sender, EventArgs e)
         {
-            var deltaker = ExcelLoader.LoadRaceResult(textBox1.Text, "Northern Runners");
+            using (var stream = new FileStream(textBox1.Text, FileMode.Open))
+            {
+                var deltaker = ExcelLoader.LoadRaceResult(stream, "Northern Runners");
 
-            Form form2 = new Form2(deltaker);
-            form2.ShowDialog(this);
+                Form form2 = new Form2(deltaker);
+                form2.ShowDialog(this);
+            }
+            
             //this.Close();
         }
 
