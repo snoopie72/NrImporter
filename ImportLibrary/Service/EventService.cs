@@ -11,9 +11,11 @@ namespace Northernrunners.ImportLibrary.Service
 {
     public class EventService:IEventService
     {
+        private Random _rnd;
         private readonly IResultDataService _resultDataService;
         public EventService(IResultDataService resultDataService)
         {
+            _rnd = new Random();
             _resultDataService = resultDataService;
         }
     
@@ -51,7 +53,7 @@ namespace Northernrunners.ImportLibrary.Service
                     {
                         EventId = eventResult.Event.Id,
                         AgeCategory = GetAgeCategory(result.User),
-                        AgeGrade = GetAgeGrade(result.User),
+                        AgeGrade = GetAgeGrade(result.User, result.Time, eventResult.Event),
                         DateCreated = DateTime.Now,
                         Gender = result.User.Gender,
                         UserId = result.User.Id,
@@ -77,6 +79,20 @@ namespace Northernrunners.ImportLibrary.Service
                 }
             }
             _resultDataService.AddEventResults(query);
+        }
+
+        private double GetAgeGrade(User user, TimeSpan time, Event @event)
+        {
+            var age = user.DateOfBirth.Age(DateTime.Now);
+            var distance = @event.Distance;
+            var result = CalculateAge(age, distance, time);
+            return result;
+
+        }
+
+        private double CalculateAge(int age, double distance, TimeSpan time)
+        {
+            return _rnd.NextDouble()* 100;
         }
 
         private static int CalculateTime(TimeSpan time)

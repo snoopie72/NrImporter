@@ -69,5 +69,19 @@ namespace Northernrunners.ImportLibrary.Utils
                 return xml;
             }
         }
+
+        public static int Age(this DateTime birthDate, DateTime laterDate)
+        {
+            var age = laterDate.Year - birthDate.Year;
+            if (age > 0)
+            {
+                age -= Convert.ToInt32(laterDate.Date < birthDate.Date.AddYears(age));
+            }
+            else
+            {
+                age = 0;
+            }
+            return age;
+        }
     }
 }

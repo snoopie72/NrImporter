@@ -8,56 +8,15 @@ namespace Northernrunners.ImportLibrary.Poco
 {
     public class Event
     {
-        int id;
-        string name;
-        DateTime date;
-        string displayName;
+        
+        public int Id { get; set; }
 
-        public int Id
-        {
-            get
-            {
-                return id;
-            }
+        public string Name { get; set; }
 
-            set
-            {
-                id = value;
-            }
-        }
+        public DateTime Date { get; set; }
 
-        public string Name
-        {
-            get
-            {
-                return name;
-            }
+        public double Distance { get; set; }
 
-            set
-            {
-                name = value;
-            }
-        }
-
-        public DateTime Date
-        {
-            get
-            {
-                return date;
-            }
-
-            set
-            {
-                date = value;
-            }
-        }
-
-        public string DisplayName
-        {
-            get
-            {
-                return String.Format("{0} {1}", date.ToShortDateString(), name);
-            }
-        }
+        public string DisplayName => $"{Date.ToShortDateString()} {Name}";
     }
 }

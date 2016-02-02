@@ -154,6 +154,11 @@ namespace Northernrunners.ImportLibrary.Service.Datalayer
             _sqlDirectService.RunCommand(query);
         }
 
+        public void AddUsers(ICollection<UserDto> users)
+        {
+            throw new NotImplementedException();
+        }
+
         public void AddTempResult(TempResultDto tempResultDto)
         {
             const string userTemplate = "Northernrunners.ImportLibrary.Resources.CreateTempResult.txt";
@@ -189,14 +194,15 @@ namespace Northernrunners.ImportLibrary.Service.Datalayer
 
         public ICollection<Event> GetAllEvents()
         {
-            var sql = "select date, id, name from kai_wpa_event";
+            var sql = "SELECT a.date, a.id, a.name, b.distance_meters FROM kai_wpa_event a, kai_wpa_event_cat b where a.event_cat_id = b.id";
             var query = new Query { Sql = sql };
             var result = _sqlDirectService.RunCommand(query);
             return result.Select(item => new Event
             {
                 Id = (int)item["id"],
                 Date = (DateTime)item["date"],
-                Name = (string)item["name"]
+                Name = (string)item["name"],
+                Distance = Convert.ToDouble(item["distance_meters"])
             }).ToList();
         }
 

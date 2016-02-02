@@ -35,5 +35,12 @@ namespace NRImporter.Tests.Utils
             input.AgeGrade = 3;
             Console.WriteLine(Tools.Serialize(input));
         }
+
+        [Test]
+        public void TestAge()
+        {
+            var dato = new DateTime(1972, 10, 05);
+            Console.WriteLine(dato.Age(DateTime.Now));
+        }
     }
 }

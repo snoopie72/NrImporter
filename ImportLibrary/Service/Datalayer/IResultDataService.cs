@@ -16,6 +16,8 @@ namespace Northernrunners.ImportLibrary.Service.Datalayer
         ICollection<UserDto> GetAllUsers();
 
         void AddUser(UserDto user);
+
+        void AddUsers(ICollection<UserDto> users);
         void AddTempResult(TempResultDto tempResultDto);
 
         ICollection<TempResultDto> GetTempResults();
