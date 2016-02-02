@@ -20,5 +20,6 @@ namespace NR_Resultat_Import
         public string Place { get; set; }
 
         public bool ValidDate { get; set; }
+
     }
 }

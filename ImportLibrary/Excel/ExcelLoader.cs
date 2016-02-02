@@ -37,6 +37,7 @@ namespace Northernrunners.ImportLibrary.Excel
                 string line;
                 while ((line = streamReader.ReadLine()) != null)
                 {
+                    line = line.Replace("\"", "");                        
                     list.Add(line);
                 }
                 return list.ToArray();

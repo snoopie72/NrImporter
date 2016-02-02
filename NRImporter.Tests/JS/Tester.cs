@@ -15,17 +15,18 @@ namespace NRImporter.Tests.JS
         [Test]
         public void SomeTest()
         {
+            Console.WriteLine(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
+            Console.WriteLine(AppDomain.CurrentDomain.BaseDirectory);
             var context = new IronJS.Hosting.CSharp.Context();
             context.ExecuteFile(@"c:\temp\test.js");
 
-            //object result = context.Execute("1 + 2;");
-            //var result = context.Execute("calculate('M',30, 10, 1875421)");
-
-            //Console.WriteLine("{0} ({1})", obj, obj.GetType());
-            // "3 (System.Double)"
-
+            
+            var span = new TimeSpan(0, 0, 42,37);
             var add = context.Globals.GetT<FunctionObject>("calculate");
-            var value = Convert.ToDouble(add.Call(context.Globals, "F", 43D, 10000D, 2098421D).Unbox<object>());
+            var age = 43;
+            var distance = 10;
+            var gender = "M";
+            var value = Convert.ToDouble(add.Call(context.Globals, gender, Convert.ToDouble(age), Convert.ToDouble(distance), span.TotalSeconds).Unbox<object>());
             Console.WriteLine(value);
         }
     }
