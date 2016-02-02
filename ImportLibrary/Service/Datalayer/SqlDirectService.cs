@@ -46,6 +46,7 @@ namespace Northernrunners.ImportLibrary.Service
                             cmd.Transaction = trans;
                             cmd.CommandText = statement;
                             var reader = cmd.ExecuteReader();
+                            Console.WriteLine(cmd.CommandText);
                             while (reader.Read())
                             {
                                 var dictionary = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);

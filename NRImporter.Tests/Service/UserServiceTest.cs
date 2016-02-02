@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Northernrunners.ImportLibrary.Poco;
 using Northernrunners.ImportLibrary.Service;
 using NUnit.Framework;
 
@@ -34,6 +35,20 @@ namespace NRImporter.Tests.Service
         public void TestGetUser(string name)
         {
             Assert.IsNotNull(_userService.FindUser(name));
+        }
+
+        [Test]
+        public void TestCreateUser()
+        {
+            var user = new User
+            {
+                Name = "John Doe",
+                Email = "jdoe@gmail.com",
+                DateOfBirth = DateTime.MinValue,
+                Male = true
+            };
+            user = _userService.AddUser(user);
+            Assert.IsNotNull(user);
         }
     }
 }

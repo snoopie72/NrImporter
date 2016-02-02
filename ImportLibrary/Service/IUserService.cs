@@ -5,7 +5,7 @@ namespace Northernrunners.ImportLibrary.Service
 {
     public interface IUserService
     {
-        void AddUser(User user);
+        User AddUser(User user);
         User FindUser(string name);
 
         ICollection<User> GetAllUsers();

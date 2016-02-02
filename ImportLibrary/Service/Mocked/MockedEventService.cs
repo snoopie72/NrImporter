@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Northernrunners.ImportLibrary.Dto;
 using Northernrunners.ImportLibrary.Poco;
 
 namespace Northernrunners.ImportLibrary.Service.Mocked
@@ -40,6 +41,11 @@ namespace Northernrunners.ImportLibrary.Service.Mocked
             return eventer;
         }
 
+        public void AddEventResults(EventResult eventResult)
+        {
+            throw new NotImplementedException();
+        }
+
         public ICollection<Event> GetEvents(string name)
         {
             throw new NotImplementedException();
@@ -50,7 +56,7 @@ namespace Northernrunners.ImportLibrary.Service.Mocked
             throw new NotImplementedException();
         }
 
-        public void AddEventResults(EventResult eventResult)
+        public void AddEventResults(EventResultDto eventResult)
         {
             throw new NotImplementedException();
         }

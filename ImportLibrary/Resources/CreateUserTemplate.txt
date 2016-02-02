@@ -1,0 +1,1 @@
+﻿INSERT INTO `kai_users` VALUES (null,@username,'',@username,@email,'',@date,'',0,@fullname);

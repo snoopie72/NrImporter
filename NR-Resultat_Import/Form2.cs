@@ -11,15 +11,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Northernrunners.ImportLibrary.Service;
+using Northernrunners.ImportLibrary.Utils;
 
 namespace NR_Resultat_Import
 {
     public partial class Form2 : Form
     {
         private List<Deltaker> deltakere;
+        private IUserHandler _userHandler;
 
         public Form2(List<Deltaker> deltakere)
         {
+            _userHandler = new UserHandler(new UserService(new SqlDirectService(ConfigurationManager.ConnectionStrings["db"].ConnectionString)));
             InitializeComponent();
             this.deltakere = deltakere;
             var bindingList = new BindingList<Deltaker>(deltakere);
@@ -57,6 +60,34 @@ namespace NR_Resultat_Import
             var x = (ListBox) sender;
             var ev = (Event) x.SelectedItem;
             label2.Text = ev.DisplayName;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var x = dataGridView1.Rows;
+            var collection = new List<User>();
+            foreach (DataGridViewRow row in x)
+            {
+                var username = Convert.ToString(row.Cells[0].Value);
+                if (String.IsNullOrEmpty(username))
+                {
+                    break;
+                }
+                var gender = Convert.ToString(row.Cells[1].Value);
+
+                var user = new User
+                {
+                    Name = username,
+                    Male = gender.ToLower().Equals("m"),
+                    Email = ""
+                };
+                collection.Add(user);
+
+            }
+            Tools.RandomizeDateOfBirth(collection);
+            var users = _userHandler.LoadUserDetails(collection);
+
+
         }
     }
 }

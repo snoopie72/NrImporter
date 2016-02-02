@@ -43,7 +43,7 @@ namespace Northernrunners.ImportLibrary.Service.Mocked
 
         }
 
-        public void AddUser(User user)
+        public User AddUser(User user)
         {
             throw new NotImplementedException();
         }

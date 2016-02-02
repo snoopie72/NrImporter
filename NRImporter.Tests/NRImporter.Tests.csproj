@@ -65,8 +65,11 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Service\ResultDataServiceTest.cs" />
     <Compile Include="Service\SqlDirectServiceTest.cs" />
+    <Compile Include="Service\UserHandlerTest.cs" />
     <Compile Include="Service\UserServiceTest.cs" />
+    <Compile Include="Utils\ToolsTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -75,6 +78,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <EmbeddedResource Include="Resources\Folkeparken1404.csv" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ImportLibrary\ImportLibrary.csproj">
