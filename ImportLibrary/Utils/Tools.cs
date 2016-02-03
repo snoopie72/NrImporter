@@ -31,7 +31,15 @@ namespace Northernrunners.ImportLibrary.Utils
 
         public static DateTime ParseDate(string date)
         {
-            return DateTime.ParseExact(date, "dd MMM yyyy", CultureInfo.GetCultureInfo("no-NO"));
+            try
+            {
+                return DateTime.ParseExact(date, "dd MMM yyyy", CultureInfo.GetCultureInfo("no-NO"));
+            }
+            catch (Exception exp)
+            {
+                throw;
+            }
+            
         }
 
         public static DateTime ParseDateMember(string date)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using Northernrunners.ImportLibrary.Dto;
@@ -56,6 +57,7 @@ namespace Northernrunners.ImportLibrary.Service
 
         public ICollection<User> CreateAndGetUsers(ICollection<User> users, StreamWriter streamWriter)
         {
+            CamelCaseUsers(users);
             var usersFromDb = _resultDataService.GetAllUsers();
             var usersToCreate = (from user in users let userFound = usersFromDb.FirstOrDefault(t => t.Name.Equals(user.Name)) where userFound == null select user).ToList();
             if (usersToCreate.Count == 0)
@@ -81,6 +83,15 @@ namespace Northernrunners.ImportLibrary.Service
                 Gender = userDto.Gender,
                 Name = userDto.Name
             }).ToList();
+        }
+
+        private static void CamelCaseUsers(IEnumerable<User> users)
+        {
+            var textInfo = new CultureInfo("no-NO", false).TextInfo;
+            foreach (var user in users)
+            {
+                user.Name = textInfo.ToTitleCase(user.Name);
+            }
         }
 
         public ICollection<User> GetAllUsersWithInvalidDate()

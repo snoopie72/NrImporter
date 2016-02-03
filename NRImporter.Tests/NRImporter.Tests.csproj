@@ -88,9 +88,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Service\ResultDataServiceTest.cs" />
-    <Compile Include="Service\SqlDirectServiceTest.cs" />
-    <Compile Include="Service\UserServiceTest.cs" />
     <Compile Include="Utils\ToolsTest.cs" />
   </ItemGroup>
   <ItemGroup>
