@@ -6,6 +6,7 @@ using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using Northernrunners.ImportLibrary.Poco;
+using Northernrunners.ImportLibrary.Utils;
 
 namespace Northernrunners.ImportLibrary.Excel
 {
@@ -31,7 +32,28 @@ namespace Northernrunners.ImportLibrary.Excel
             var enc = Encoding.GetEncoding("ISO-8859-1");
             var lines = StreamToString(input, enc);
             var users = new List<User>();
+            int i = 0;
+            foreach (var line in lines)
+            {
+                if (i > 0) {
+                    var data = line.Split(';');
+                    var dato = Convert.ToString(data[6]);
+                    Console.WriteLine(dato);
+                    var gender = data[7].Equals("Mann") ? "M" : "F";
+                    var user = new User
+                    {
+                        DateOfBirth = Tools.ParseDateMember(dato),
+                        Email = Convert.ToString(data[1]),
+                        Gender = gender,
+                        Name = Convert.ToString(data[0])
+                    };
+                    users.Add(user);
+                }
+                i++;
 
+
+            }
+            return users;
 
 
         } 

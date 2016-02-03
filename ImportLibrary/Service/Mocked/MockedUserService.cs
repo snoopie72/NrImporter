@@ -70,5 +70,15 @@ namespace Northernrunners.ImportLibrary.Service.Mocked
         {
             throw new NotImplementedException();
         }
+
+        public ICollection<User> GetAllUsersWithInvalidDate()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateUser(User user)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

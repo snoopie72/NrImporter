@@ -85,7 +85,7 @@ namespace Northernrunners.ImportLibrary.Service
 
         public ICollection<User> GetAllUsersWithInvalidDate()
         {
-            return GetAllUsers().Where(t => t.DateOfBirth < new DateTime(1900, 1, 1)).ToList()
+            return GetAllUsers().Where(t => t.DateOfBirth < new DateTime(1900, 1, 1)).ToList();
         }
 
         public void UpdateUser(User user)

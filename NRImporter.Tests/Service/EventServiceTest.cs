@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Diagnostics;
 using System.Globalization;
-using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Threading;
 using Northernrunners.ImportLibrary.Excel;
@@ -77,6 +73,24 @@ namespace NRImporter.Tests.Service
         }
 
         [Test]
+        public void TestLoadMembers()
+        {
+            var handler = new EventResultHandler(_userService, _service);
+
+            const string resource = "NRImporter.Tests.Resources.medlemsregister.csv";
+
+            using (var stream = _assembly.GetManifestResourceStream(resource))
+            {
+                var users = ExcelLoader.LoadMemberFile(stream);
+                foreach (var user in users)
+                {
+                    Console.WriteLine(user.Name + " " + user.Gender + " " + user.DateOfBirth);
+                }
+                handler.CreateOrIgnoreUsers(users);                
+            }
+        }
+
+        [Test]
         public void TestTimespan()
         {
             string[] values = { "6", "6:12", "6:12:14", "6:12:14:45",
@@ -85,16 +99,16 @@ namespace NRImporter.Tests.Service
             string[] cultureNames = { "no-NO" };
 
             // Change the current culture.
-            foreach (string cultureName in cultureNames)
+            foreach (var cultureName in cultureNames)
             {
                 Thread.CurrentThread.CurrentCulture = new CultureInfo(cultureName);
                 Console.WriteLine("Current Culture: {0}",
                                   Thread.CurrentThread.CurrentCulture.Name);
-                foreach (string value in values)
+                foreach (var value in values)
                 {
                     try
                     {
-                        TimeSpan ts = TimeSpan.Parse(value);
+                        var ts = TimeSpan.Parse(value);
                         Console.WriteLine("{0} --> {1}", value, ts.ToString("c"));
                         Console.WriteLine("Minutes: " + ts.Minutes);
                         Console.WriteLine("Seconds: " + ts.Seconds);

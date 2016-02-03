@@ -71,5 +71,10 @@ namespace Northernrunners.ImportLibrary.Service
         {
             _userService.UpdateUser(user);
         }
+
+        public void CreateOrIgnoreUsers(ICollection<User> users)
+        {
+            _userService.CreateAndGetUsers(users, new StreamWriter(Console.OpenStandardOutput()));
+        }
     }
 }

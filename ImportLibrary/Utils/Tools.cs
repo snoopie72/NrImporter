@@ -34,6 +34,11 @@ namespace Northernrunners.ImportLibrary.Utils
             return DateTime.ParseExact(date, "dd MMM yyyy", CultureInfo.GetCultureInfo("no-NO"));
         }
 
+        public static DateTime ParseDateMember(string date)
+        {
+            return DateTime.ParseExact(date, "dd.MM.yyyy", CultureInfo.GetCultureInfo("no-NO"));
+        }
+
         public static object GetCellValueFromColumnHeader(this DataGridViewCellCollection cellCollection,
             string headerText)
         {
