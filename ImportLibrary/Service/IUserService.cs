@@ -14,5 +14,10 @@ namespace Northernrunners.ImportLibrary.Service
         void AddUsers(ICollection<User> users);
 
         ICollection<User> CreateAndGetUsers(ICollection<User> users, StreamWriter writer);
+
+        ICollection<User> GetAllUsersWithInvalidDate();
+
+        void UpdateUser(User user);
+
     }
 }

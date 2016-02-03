@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.AccessControl;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace NR_Resultat_Import
+﻿namespace Northernrunners.ImportLibrary.Poco
 {
-    public class Deltaker
+    public class UserEventInfo
     {
         public string Name { get; set; }
 

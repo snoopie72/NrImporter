@@ -61,8 +61,8 @@ namespace Northernrunners.ImportLibrary.Utils
         public static string Serialize<T>(T datatype)
         {
             var xsSubmit = new XmlSerializer(typeof (T));
-            using (StringWriter sww = new StringWriter())
-            using (XmlWriter writer = XmlWriter.Create(sww))
+            using (var sww = new StringWriter())
+            using (var writer = XmlWriter.Create(sww))
             {
                 xsSubmit.Serialize(writer, datatype);
                 var xml = sww.ToString(); // Your XML

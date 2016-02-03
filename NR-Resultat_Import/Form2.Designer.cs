@@ -71,11 +71,11 @@
             // 
             this.listBox1.FormattingEnabled = true;
             this.listBox1.ItemHeight = 20;
-            this.listBox1.Location = new System.Drawing.Point(402, 649);
+            this.listBox1.Location = new System.Drawing.Point(160, 649);
             this.listBox1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.listBox1.MultiColumn = true;
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(256, 104);
+            this.listBox1.Size = new System.Drawing.Size(498, 364);
             this.listBox1.TabIndex = 3;
             this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
@@ -93,12 +93,12 @@
             // textBox1
             // 
             this.textBox1.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.textBox1.Location = new System.Drawing.Point(22, 920);
+            this.textBox1.Location = new System.Drawing.Point(22, 1077);
             this.textBox1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(704, 300);
+            this.textBox1.Size = new System.Drawing.Size(704, 143);
             this.textBox1.TabIndex = 5;
             // 
             // btnSubmitResults
@@ -116,7 +116,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1066, 1271);
+            this.ClientSize = new System.Drawing.Size(1066, 1254);
             this.Controls.Add(this.btnSubmitResults);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.LoadUsers);

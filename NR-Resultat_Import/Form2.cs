@@ -18,16 +18,16 @@ namespace NR_Resultat_Import
 {
     public partial class Form2 : Form
     {
-        private readonly ICollection<Deltaker> _deltakere;
+        private readonly ICollection<UserEventInfo> _deltakere;
         private readonly EventResultHandler _eventResultHandler;
-        public Form2(ICollection<Deltaker> deltakere)
+        public Form2(ICollection<UserEventInfo> deltakere)
         {
             var sqlDirectService = new SqlDirectService(ConfigurationManager.ConnectionStrings["db"].ConnectionString);
             _eventResultHandler = new EventResultHandler(new UserService(new ResultDataService(sqlDirectService)), new EventService(new ResultDataService(sqlDirectService)));
             
             InitializeComponent();
             this._deltakere = deltakere;
-            var bindingList = new BindingList<Deltaker>(deltakere.ToList());
+            var bindingList = new BindingList<UserEventInfo>(deltakere.ToList());
             var source = new BindingSource(bindingList, null);
             dataGridView1.DataSource = source;
             dataGridView1.ReadOnly = true;
@@ -37,7 +37,7 @@ namespace NR_Resultat_Import
                 var eventService = new EventService(new ResultDataService(sqlDirectService));
                 //textBox1.Text = x.GetEvents("adsf", 2016).ToList().FirstOrDefault().Id1.ToString();
                 //List<Event> eventer = eventService.GetEvents("adsf", DateTime.Now.Year).ToList();
-                var eventer = eventService.GetEvents(new DateTime(2015, 1, 1), DateTime.Now);
+                var eventer = eventService.GetEvents(new DateTime(2014, 1, 1), DateTime.Now);
                 if (eventer.Count >  0)
                 {
                     label2.Text = $"ID={eventer.First().Id}";
@@ -87,7 +87,7 @@ namespace NR_Resultat_Import
             
         }
 
-        private List<string> CheckValidData(ICollection<Deltaker> collection)
+        private List<string> CheckValidData(ICollection<UserEventInfo> collection)
         {
             var list = new List<string>();
             foreach (var deltaker in collection.Where(deltaker => !list.Contains(deltaker.Stage)))

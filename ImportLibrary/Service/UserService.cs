@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using Northernrunners.ImportLibrary.Dto;
 using Northernrunners.ImportLibrary.Poco;
 using Northernrunners.ImportLibrary.Service.Datalayer;
-using Northernrunners.ImportLibrary.Service.Helper;
-using Northernrunners.ImportLibrary.Utils;
 
 namespace Northernrunners.ImportLibrary.Service
 {
@@ -85,6 +81,24 @@ namespace Northernrunners.ImportLibrary.Service
                 Gender = userDto.Gender,
                 Name = userDto.Name
             }).ToList();
+        }
+
+        public ICollection<User> GetAllUsersWithInvalidDate()
+        {
+            return GetAllUsers().Where(t => t.DateOfBirth < new DateTime(1900, 1, 1)).ToList()
+        }
+
+        public void UpdateUser(User user)
+        {
+            var userDto = new UserDto
+            {
+                DateOfBirth = user.DateOfBirth,
+                Email = user.Email,
+                Gender = user.Gender,
+                Id = user.Id
+            };
+            userDto.Name = userDto.Name;
+            _resultDataService.UpdateUser(userDto);
         }
     }
 }

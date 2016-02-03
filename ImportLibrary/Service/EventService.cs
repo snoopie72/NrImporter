@@ -8,7 +8,6 @@ using Northernrunners.ImportLibrary.Dto;
 using Northernrunners.ImportLibrary.Poco;
 using Northernrunners.ImportLibrary.Service.Datalayer;
 using Northernrunners.ImportLibrary.Utils;
-using NR_Resultat_Import;
 
 namespace Northernrunners.ImportLibrary.Service
 {
