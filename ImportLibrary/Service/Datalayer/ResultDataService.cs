@@ -206,6 +206,11 @@ namespace Northernrunners.ImportLibrary.Service.Datalayer
             }).ToList();
         }
 
+        public void UpdateUser(UserDto user)
+        {
+            throw new NotImplementedException();
+        }
+
         private static List<string> GetParams(string sql)
         {
             var list = new List<string>

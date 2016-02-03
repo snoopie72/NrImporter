@@ -37,7 +37,6 @@ namespace NR_Resultat_Import
             using (var stream = new FileStream(textBox1.Text, FileMode.Open))
             {
                 var deltaker = ExcelLoader.LoadRaceResult(stream, "Northern Runners");
-
                 Form form2 = new Form2(deltaker);
                 form2.ShowDialog(this);
             }

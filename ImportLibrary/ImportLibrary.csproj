@@ -71,7 +71,7 @@
     <Compile Include="Dto\TempResultDto.cs" />
     <Compile Include="Dto\UserDto.cs" />
     <Compile Include="Excel\ExcelLoader.cs" />
-    <Compile Include="Poco\Deltaker.cs" />
+    <Compile Include="Poco\UserEventInfo.cs" />
     <Compile Include="Poco\Event.cs" />
     <Compile Include="Poco\EventResult.cs" />
     <Compile Include="Poco\Result.cs" />
@@ -113,6 +113,11 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\CreateTempResult.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\calculate.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

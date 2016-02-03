@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using Northernrunners.ImportLibrary.Poco;
 using Northernrunners.ImportLibrary.Utils;
-using NR_Resultat_Import;
 
 namespace Northernrunners.ImportLibrary.Service
 {
@@ -20,7 +19,7 @@ namespace Northernrunners.ImportLibrary.Service
             _eventService = eventService;
         }
 
-        public void InsertResultInEvent(ICollection<Deltaker> deltakere, Event ev)
+        public void InsertResultInEvent(ICollection<UserEventInfo> deltakere, Event ev)
         {
             var eventResult = new EventResult {Event = ev};
             var usernames = deltakere.Select(deltaker => new User { Name = deltaker.Name, Gender = deltaker.Gender.ToUpper(), DateOfBirth = DateTime.MinValue }).ToList();
@@ -52,7 +51,11 @@ namespace Northernrunners.ImportLibrary.Service
             _eventService.AddEventResults(eventResult);
         }
 
-        public void LoadAndFillDeltakerInfo(ICollection<Deltaker> deltakere)
+        public ICollection<User> GetUsersWithInvalidDate()
+        {
+            return _userService.GetAllUsersWithInvalidDate();
+        } 
+        public void LoadAndFillDeltakerInfo(ICollection<UserEventInfo> deltakere)
         {
             var usernames = deltakere.Select(deltaker => new User { Name = deltaker.Name, Gender = deltaker.Gender.ToUpper(), DateOfBirth = DateTime.MinValue }).ToList();
             var users = _userService.CreateAndGetUsers(usernames, new StreamWriter(Console.OpenStandardOutput()));
@@ -62,6 +65,11 @@ namespace Northernrunners.ImportLibrary.Service
                 deltaker.ValidDate = userInDb.ValidUser();
             }
 
+        }
+
+        public void UpdateUser(User user)
+        {
+            _userService.UpdateUser(user);
         }
     }
 }

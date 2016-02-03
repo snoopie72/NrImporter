@@ -25,5 +25,7 @@ namespace Northernrunners.ImportLibrary.Service.Datalayer
         void DeleteTempResult(TempResultDto tempResultDto);
 
         ICollection<Event> GetAllEvents();
+
+        void UpdateUser(UserDto user);
     }
 }

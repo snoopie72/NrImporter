@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using IronJS;
+using IronJS.Hosting;
 using Northernrunners.ImportLibrary.Dto;
 using Northernrunners.ImportLibrary.Poco;
 using Northernrunners.ImportLibrary.Service.Datalayer;
 using Northernrunners.ImportLibrary.Utils;
-using NR_Resultat_Import;
 
 namespace Northernrunners.ImportLibrary.Service
 {
@@ -13,10 +15,17 @@ namespace Northernrunners.ImportLibrary.Service
     {
         private Random _rnd;
         private readonly IResultDataService _resultDataService;
+        private CSharp.Context _context;
+        private FunctionObject _calculate;
         public EventService(IResultDataService resultDataService)
         {
             _rnd = new Random();
             _resultDataService = resultDataService;
+            _context = new IronJS.Hosting.CSharp.Context();
+
+            var file = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources/calculate.js");
+            _context.ExecuteFile(file);
+            _calculate = _context.Globals.GetT<FunctionObject>("calculate");
         }
     
 
@@ -85,14 +94,13 @@ namespace Northernrunners.ImportLibrary.Service
         {
             var age = user.DateOfBirth.Age(DateTime.Now);
             var distance = @event.Distance;
-            var result = CalculateAge(age, distance, time);
+            var result = CalculateAge(age, distance, time, user.Gender);
             return result;
-
         }
 
-        private double CalculateAge(int age, double distance, TimeSpan time)
-        {
-            return _rnd.NextDouble()* 100;
+        private double CalculateAge(int age, double distance, TimeSpan time, string gender)
+        {            
+            return Convert.ToDouble(_calculate.Call(_context.Globals, gender, Convert.ToDouble(age), Convert.ToDouble(distance / 1000), time.TotalSeconds).Unbox<object>());
         }
 
         private static int CalculateTime(TimeSpan time)
