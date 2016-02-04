@@ -117,6 +117,7 @@ namespace Northernrunners.ImportLibrary.Service.Datalayer
 
             var queries = new List<Query>();
             Query query;
+            var email = user.Email ?? "";
             using (var stream = _assembly.GetManifestResourceStream(userTemplate))
             {
 
@@ -126,7 +127,7 @@ namespace Northernrunners.ImportLibrary.Service.Datalayer
             }
             var username = user.Name.Replace(" ", string.Empty);
             query.ParameterValues.Add(new Parameter("@username", username));
-            query.ParameterValues.Add(new Parameter("@email", ""));
+            query.ParameterValues.Add(new Parameter("@email", email));
             query.ParameterValues.Add(new Parameter("@date", user.DateOfBirth));
             query.ParameterValues.Add(new Parameter("@fullname", user.Name));
 
