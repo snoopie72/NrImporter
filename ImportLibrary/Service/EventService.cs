@@ -66,19 +66,7 @@ namespace Northernrunners.ImportLibrary.Service
             var query = new List<EventResultDto>();
             foreach (var result in eventResult.Results)
             {
-                    var time = CalculateTime(result.Time);
-                    var eventResultDto = new EventResultDto
-                    {
-                        EventId = eventResult.Event.Id,
-                        AgeCategory = GetAgeCategory(result.User, eventResult.Event),
-                        AgeGrade = GetAgeGrade(result.User, result.Time, eventResult.Event),
-                        DateCreated = DateTime.Now,
-                        Gender = result.User.Gender,
-                        UserId = result.User.Id,
-                        //TODO: Fikse time.. ligger i resultat
-                        Time = time,
-                        Position = result.Position
-                    };
+                    
                 if (result.User.DateOfBirth.Equals(DateTime.MinValue))
                 {
                     var dataObject = Tools.Serialize(eventResult);
@@ -92,6 +80,18 @@ namespace Northernrunners.ImportLibrary.Service
                 }
                 else
                 {
+                    var time = CalculateTime(result.Time);
+                    var eventResultDto = new EventResultDto
+                    {
+                        EventId = eventResult.Event.Id,
+                        AgeCategory = GetAgeCategory(result.User, eventResult.Event),
+                        AgeGrade = GetAgeGrade(result.User, result.Time, eventResult.Event),
+                        DateCreated = DateTime.Now,
+                        Gender = result.User.Gender,
+                        UserId = result.User.Id,
+                        Time = time,
+                        Position = result.Position
+                    };
                     //_resultDataService.AddEventResults(eventResultDto);
                     query.Add(eventResultDto);
                 }
