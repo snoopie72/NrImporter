@@ -95,6 +95,7 @@
     </None>
     <EmbeddedResource Include="Resources\Folkeparken1404.csv" />
     <EmbeddedResource Include="Resources\medlemsregister.csv" />
+    <None Include="Resources\Filter.csv" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ImportLibrary\ImportLibrary.csproj">

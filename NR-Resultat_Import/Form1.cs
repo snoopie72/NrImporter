@@ -50,11 +50,17 @@ namespace NR_Resultat_Import
             {
                 FileInfo f = new FileInfo(textBox1.Text);
                 if (f.Exists)
-                    button2.Enabled = true;
+                    btnImport.Enabled = true;
                 else
-                    button2.Enabled = false;
+                    btnImport.Enabled = false;
             }
             catch (Exception) {}
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Form3 f3 = new Form3();
+            f3.ShowDialog(this);
         }
     }
 }
