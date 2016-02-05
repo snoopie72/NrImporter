@@ -28,7 +28,12 @@ namespace NRImporter.Tests.Utils
         public void Serializer()
         {
             var input = new EventResultDto {AgeGrade = 3};
-            Console.WriteLine(Tools.Serialize(input));
+            var xml = Tools.Serialize(input);
+            Console.WriteLine(xml);
+            input = Tools.Deserializate<EventResultDto>(xml);
+            Console.WriteLine(input.AgeCategory);
+            
+
         }
 
         [Test]

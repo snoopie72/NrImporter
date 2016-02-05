@@ -17,6 +17,10 @@ namespace Northernrunners.ImportLibrary.Service
 
         ICollection<Event> GetEvents(string name);
 
-      
+        ICollection<TempResultDto> GetAllTempResults();
+
+        void DeleteTempResult(TempResultDto tempResult);
+
+
     }
 }

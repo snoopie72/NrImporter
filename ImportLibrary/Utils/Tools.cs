@@ -83,6 +83,19 @@ namespace Northernrunners.ImportLibrary.Utils
             }
         }
 
+        public static T Deserializate<T>(string document)
+        {
+            var xmlDocument = new XmlDocument();
+            xmlDocument.Load(document);
+            var xmlSerializer = new XmlSerializer(typeof(T));
+            using (var xmlReader = new XmlNodeReader(xmlDocument))
+            {
+                var result = (T) xmlSerializer.Deserialize(xmlReader);
+                return result;
+            }
+            
+        }
+
         public static int Age(this DateTime birthDate, DateTime laterDate)
         {
             var age = laterDate.Year - birthDate.Year;

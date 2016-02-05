@@ -37,7 +37,7 @@ namespace NRImporter.Tests.Service
         }
 
         //
-        //[Test]
+        [Test]
         public void AddResults()
         {
             const string resource = "NRImporter.Tests.Resources.Folkeparken1404.csv";
@@ -88,6 +88,17 @@ namespace NRImporter.Tests.Service
                     Console.WriteLine(user.Name + " " + user.Gender + " " + user.DateOfBirth);
                 }
                 handler.CreateOrIgnoreUsers(users);                
+            }
+        }
+
+        [Test]
+        public void TestGetInvalidUsers()
+        {
+            var handler = new EventResultHandler(_userService, _service);
+            var users = _userService.GetAllUsersWithInvalidDate();
+            foreach (var x in users)
+            {
+                Console.WriteLine(x.Name);
             }
         }
 

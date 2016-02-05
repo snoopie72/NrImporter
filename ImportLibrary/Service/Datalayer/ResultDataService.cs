@@ -194,12 +194,25 @@ namespace Northernrunners.ImportLibrary.Service.Datalayer
 
         public ICollection<TempResultDto> GetTempResults()
         {
-            throw new NotImplementedException();
+            var sql = "select * from kai_tempresults";
+            var query = new Query()
+            {
+                Sql = sql
+            };
+            var results = _sqlDirectService.RunCommand(query);
+            return results.Select(row => new TempResultDto
+            {
+                Data = Convert.ToString(row["data"]), Id = Convert.ToInt32(row["id"]), Registered = Convert.ToDateTime(row["registered"]), UserId = Convert.ToInt32(row["userid"])
+            }).ToList();
+            
         }
 
         public void DeleteTempResult(TempResultDto tempResultDto)
         {
-            throw new NotImplementedException();
+            var sql = "delete from kai_tempresults where id = @id";
+            var query = new Query {Sql = sql};
+            query.ParameterValues.Add(new Parameter("@id", tempResultDto.Id));
+            _sqlDirectService.RunCommand(query);
         }
 
         public ICollection<Event> GetAllEvents()

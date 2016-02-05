@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using Northernrunners.ImportLibrary.Dto;
 using Northernrunners.ImportLibrary.Poco;
 using Northernrunners.ImportLibrary.Utils;
 
@@ -81,6 +82,28 @@ namespace Northernrunners.ImportLibrary.Service
         public void CreateOrIgnoreUsers(ICollection<User> users)
         {
             _userService.CreateAndGetUsers(users, new StreamWriter(Console.OpenStandardOutput()));
+        }
+
+        public void UpdateTempResults()
+        {
+            var tempResults = _eventService.GetAllTempResults();
+            var itemsToDelete = new List<TempResultDto>();
+            var invalidUsers = _userService.GetAllUsersWithInvalidDate();
+            foreach (var tempResult in tempResults)
+            {
+                var userId = tempResult.UserId;
+                var resultHasInvalidUser = invalidUsers.FirstOrDefault(t => t.Id.Equals(userId));
+                if (resultHasInvalidUser == null) 
+                {
+                    itemsToDelete.Add(tempResult);
+                }
+            }
+            foreach (var itemToDelete in itemsToDelete)
+            {
+                var eventResult = Tools.Deserializate<EventResult>(itemToDelete.Data);
+                _eventService.AddEventResults(eventResult);
+                _eventService.DeleteTempResult(itemToDelete);
+            }
         }
     }
 }
