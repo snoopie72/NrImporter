@@ -54,6 +54,11 @@ namespace Northernrunners.ImportLibrary.Service.Mocked
             return _users.FirstOrDefault(user => user.Name.Equals(name));
         }
 
+        public User FindUser(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public ICollection<User> GetAllUsers()
         {
             return _users;

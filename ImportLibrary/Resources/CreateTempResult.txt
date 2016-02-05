@@ -1,1 +1,1 @@
-﻿INSERT INTO `kai_tempresults` VALUES (null,@userid,@registered,@data);
+﻿INSERT INTO `kai_tempresults` VALUES (null,@userid,@registered,@data, @eventid);

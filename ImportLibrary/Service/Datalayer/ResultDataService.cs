@@ -185,6 +185,7 @@ namespace Northernrunners.ImportLibrary.Service.Datalayer
             query.ParameterValues.Add(new Parameter("@userid", tempResultDto.UserId));
             query.ParameterValues.Add(new Parameter("@registered", tempResultDto.Registered));
             query.ParameterValues.Add(new Parameter("@data", tempResultDto.Data));
+            query.ParameterValues.Add(new Parameter("@eventid", tempResultDto.EventId));
 
             _sqlDirectService.RunCommand(query);
 
@@ -202,7 +203,7 @@ namespace Northernrunners.ImportLibrary.Service.Datalayer
             var results = _sqlDirectService.RunCommand(query);
             return results.Select(row => new TempResultDto
             {
-                Data = Convert.ToString(row["data"]), Id = Convert.ToInt32(row["id"]), Registered = Convert.ToDateTime(row["registered"]), UserId = Convert.ToInt32(row["userid"])
+                Data = Convert.ToString(row["data"]), Id = Convert.ToInt32(row["id"]), Registered = Convert.ToDateTime(row["registered"]), UserId = Convert.ToInt32(row["userid"]), EventId = Convert.ToInt32(row["userid"])
             }).ToList();
             
         }

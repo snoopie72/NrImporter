@@ -36,6 +36,11 @@ namespace Northernrunners.ImportLibrary.Service
             return  GetAllUsers().FirstOrDefault(t => t.Name.Equals(name));
         }
 
+        public User FindUser(int id)
+        {
+            return GetAllUsers().FirstOrDefault(t => t.Id.Equals(id));
+        }
+
         public ICollection<User> GetAllUsers()
         {
             var users = _resultDataService.GetAllUsers();

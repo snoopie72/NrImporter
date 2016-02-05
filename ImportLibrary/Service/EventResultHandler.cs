@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using Northernrunners.ImportLibrary.Dto;
 using Northernrunners.ImportLibrary.Poco;
 using Northernrunners.ImportLibrary.Utils;
@@ -16,12 +18,17 @@ namespace Northernrunners.ImportLibrary.Service
 
         public EventResultHandler(IUserService userService, IEventService eventService)
         {
+            
             _userService = userService;
             _eventService = eventService;
         }
 
         public void InsertResultInEvent(ICollection<UserEventInfo> deltakere, Event ev)
         {
+            if (string.IsNullOrEmpty(ev.Name))
+            {
+                ev = _eventService.GetEvent(ev.Id);
+            }
             var eventResult = new EventResult {Event = ev};
             // Hvis bruker ikke fins blir dato satt til DateTime.MinValue, resultat vil legges inn i tempresult
             var usernames = deltakere.Select(deltaker => new User { Name = deltaker.Name, Gender = deltaker.Gender.ToUpper(), DateOfBirth = DateTime.MinValue }).ToList();
@@ -100,7 +107,25 @@ namespace Northernrunners.ImportLibrary.Service
             }
             foreach (var itemToDelete in itemsToDelete)
             {
-                var eventResult = Tools.Deserializate<EventResult>(itemToDelete.Data);
+                var result = Tools.Deserializate<Result>(itemToDelete.Data);
+                var eventId = itemToDelete.EventId;
+                var userId = itemToDelete.UserId;
+                var user = _userService.FindUser(userId);
+
+                if (user == null) continue;
+                result.User = user;
+                var ev = _eventService.GetEvent(eventId);
+                var eventResult = new EventResult
+                {
+                    Event = ev,
+                        
+                    Results = new List<Result>
+                    {
+                        result
+                    }
+                };
+
+
                 _eventService.AddEventResults(eventResult);
                 _eventService.DeleteTempResult(itemToDelete);
             }

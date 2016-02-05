@@ -21,6 +21,8 @@ namespace Northernrunners.ImportLibrary.Service
 
         void DeleteTempResult(TempResultDto tempResult);
 
+        Event GetEvent(int eventId);
+
 
     }
 }

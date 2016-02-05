@@ -86,7 +86,7 @@ namespace Northernrunners.ImportLibrary.Utils
         public static T Deserializate<T>(string document)
         {
             var xmlDocument = new XmlDocument();
-            xmlDocument.Load(document);
+            xmlDocument.LoadXml(document);
             var xmlSerializer = new XmlSerializer(typeof(T));
             using (var xmlReader = new XmlNodeReader(xmlDocument))
             {

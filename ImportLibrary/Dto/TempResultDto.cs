@@ -12,5 +12,7 @@ namespace Northernrunners.ImportLibrary.Dto
         public int UserId { get; set; }
         public DateTime Registered { get; set; }
         public string Data { get; set; }
+
+        public int EventId { get; set; }
     }
 }

@@ -9,6 +9,8 @@ namespace Northernrunners.ImportLibrary.Service
         void AddUser(User user);
         User FindUser(string name);
 
+        Poco.User FindUser(int id);
+
         ICollection<User> GetAllUsers();
 
         void AddUsers(ICollection<User> users);

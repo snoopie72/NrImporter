@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using System.Globalization;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using Northernrunners.ImportLibrary.Excel;
@@ -47,7 +48,7 @@ namespace NRImporter.Tests.Service
             Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("no-NO");
             using (var stream = _assembly.GetManifestResourceStream(resource))
             {
-                var deltakere = ExcelLoader.LoadRaceResult(stream, filter);
+                var deltakere = ExcelLoader.LoadRaceResult(stream, filter);                
                 handler.InsertResultInEvent(deltakere, new Event { Id = 4 });
                 
             }
@@ -71,6 +72,13 @@ namespace NRImporter.Tests.Service
             }
 
 
+        }
+
+        [Test]
+        public void TestUpdateInvalidResults()
+        {
+            var handler = new EventResultHandler(_userService, _service);
+            handler.UpdateTempResults();
         }
 
         [Test]

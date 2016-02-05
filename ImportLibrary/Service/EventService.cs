@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using IronJS;
 using IronJS.Hosting;
 using Northernrunners.ImportLibrary.Dto;
@@ -69,34 +71,44 @@ namespace Northernrunners.ImportLibrary.Service
                     
                 if (result.User.DateOfBirth.Equals(DateTime.MinValue))
                 {
-                    var dataObject = Tools.Serialize(eventResult);
+                    var dataObject = Tools.Serialize(result);
+                    Console.WriteLine(dataObject);
+                    Console.WriteLine(result.Time);
+                    Console.WriteLine("*******");
                     var tempResult = new TempResultDto
                     {
                         Data = dataObject,
                         Registered = DateTime.Now,
-                        UserId = result.User.Id
+                        UserId = result.User.Id,
+                        EventId = eventResult.Event.Id
                     };
                     _resultDataService.AddTempResult(tempResult);
                 }
                 else
                 {
                     var time = CalculateTime(result.Time);
-                    var eventResultDto = new EventResultDto
-                    {
-                        EventId = eventResult.Event.Id,
-                        AgeCategory = GetAgeCategory(result.User, eventResult.Event),
-                        AgeGrade = GetAgeGrade(result.User, result.Time, eventResult.Event),
-                        DateCreated = DateTime.Now,
-                        Gender = result.User.Gender,
-                        UserId = result.User.Id,
-                        Time = time,
-                        Position = result.Position
-                    };
-                    //_resultDataService.AddEventResults(eventResultDto);
+                    var eventResultDto = CreateEventResultDto(eventResult.Event, result, time);                    
                     query.Add(eventResultDto);
                 }
             }
             _resultDataService.AddEventResults(query);
+        }
+
+        
+        private EventResultDto CreateEventResultDto(Event ev, Result result, int time)
+        {
+            var eventResultDto = new EventResultDto
+            {
+                EventId = ev.Id,
+                AgeCategory = GetAgeCategory(result.User, ev),
+                AgeGrade = GetAgeGrade(result.User, result.Time, ev),
+                DateCreated = DateTime.Now,
+                Gender = result.User.Gender,
+                UserId = result.User.Id,
+                Time = time,
+                Position = result.Position
+            };
+            return eventResultDto;
         }
 
         private double GetAgeGrade(User user, TimeSpan time, Event @event)
@@ -108,8 +120,12 @@ namespace Northernrunners.ImportLibrary.Service
         }
 
         private double CalculateAge(int age, double distance, TimeSpan time, string gender)
-        {            
-            return Convert.ToDouble(_calculate.Call(_context.Globals, gender, Convert.ToDouble(age), Convert.ToDouble(distance / 1000), time.TotalSeconds).Unbox<object>());
+        {
+            var result =
+                _calculate.Call(_context.Globals, gender, Convert.ToDouble(age), Convert.ToDouble(distance/1000),
+                    time.TotalSeconds).Unbox<object>();
+            var resultString = Convert.ToString(result);
+            return Convert.ToDouble(resultString.Replace('.',','));
         }
 
         private static int CalculateTime(TimeSpan time)
