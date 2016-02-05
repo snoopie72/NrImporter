@@ -32,7 +32,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btnImport = new System.Windows.Forms.Button();
+            this.btnFilter = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // openFileDialog1
@@ -68,23 +69,34 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // button2
+            // btnImport
             // 
-            this.button2.Enabled = false;
-            this.button2.Location = new System.Drawing.Point(196, 52);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 3;
-            this.button2.Text = "Importer...";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.btnImport.Enabled = false;
+            this.btnImport.Location = new System.Drawing.Point(196, 52);
+            this.btnImport.Name = "btnImport";
+            this.btnImport.Size = new System.Drawing.Size(75, 23);
+            this.btnImport.TabIndex = 3;
+            this.btnImport.Text = "Importer...";
+            this.btnImport.UseVisualStyleBackColor = true;
+            this.btnImport.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // btnFilter
+            // 
+            this.btnFilter.Location = new System.Drawing.Point(15, 52);
+            this.btnFilter.Name = "btnFilter";
+            this.btnFilter.Size = new System.Drawing.Size(45, 23);
+            this.btnFilter.TabIndex = 4;
+            this.btnFilter.Text = "Filter...";
+            this.btnFilter.UseVisualStyleBackColor = true;
+            this.btnFilter.Click += new System.EventHandler(this.button3_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(283, 86);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.btnFilter);
+            this.Controls.Add(this.btnImport);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label1);
@@ -101,7 +113,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnImport;
+        private System.Windows.Forms.Button btnFilter;
     }
 }
 

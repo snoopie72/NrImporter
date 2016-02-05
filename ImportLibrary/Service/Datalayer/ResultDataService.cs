@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -80,26 +81,34 @@ namespace Northernrunners.ImportLibrary.Service.Datalayer
                 var stopwatch = new Stopwatch();
                 stopwatch.Start();
                 var sql = Tools.StreamToString(stream);
-                var query = new Query { Sql = sql };
+                var query = new Query {Sql = sql};
                 var result = _sqlDirectService.RunCommand(query);
-                var returnList = result.Select(data => new UserDto
+                var returnList = new List<UserDto>();
+                foreach (var d in result)
                 {
-                    DateOfBirth = Tools.ParseDate(Convert.ToString(data["dob"])),
-                    Gender = Convert.ToString(data["gender"]),
-                    Email = Convert.ToString(data["email"]),
-                    Name = Convert.ToString(data["name"]),
-                    Id = Convert.ToInt32(data["id"])
-                }).ToList();
-                stopwatch.Stop();
-                Console.WriteLine("Time: " + stopwatch.ElapsedMilliseconds);
+                    var x2 =
+                        new UserDto
+                        {
+                            DateOfBirth = Tools.ParseDate(Convert.ToString(d["dob"])),
+                            Gender = Convert.ToString(d["gender"]),
+                            Email = Convert.ToString(d["email"]),
+                            Name = Convert.ToString(d["name"]),
+                            Id = Convert.ToInt32(d["id"])
+                        };
+                    returnList.Add(x2);
+                    stopwatch.Stop();
+                    Console.WriteLine("Time: " + stopwatch.ElapsedMilliseconds);
+                    
+                }
                 return returnList;
-
-
             }
+
+
         }
 
         public void AddUser(UserDto user)
         {
+            
             //if (user.DateOfBirth.Equals(DateTime.MinValue))
             //{
             //    user.DateOfBirth = Tools.Randomize(new Random());
@@ -108,6 +117,7 @@ namespace Northernrunners.ImportLibrary.Service.Datalayer
 
             var queries = new List<Query>();
             Query query;
+            var email = user.Email ?? "";
             using (var stream = _assembly.GetManifestResourceStream(userTemplate))
             {
 
@@ -117,7 +127,7 @@ namespace Northernrunners.ImportLibrary.Service.Datalayer
             }
             var username = user.Name.Replace(" ", string.Empty);
             query.ParameterValues.Add(new Parameter("@username", username));
-            query.ParameterValues.Add(new Parameter("@email", ""));
+            query.ParameterValues.Add(new Parameter("@email", email));
             query.ParameterValues.Add(new Parameter("@date", user.DateOfBirth));
             query.ParameterValues.Add(new Parameter("@fullname", user.Name));
 

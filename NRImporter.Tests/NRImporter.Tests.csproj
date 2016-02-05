@@ -88,9 +88,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Service\ResultDataServiceTest.cs" />
-    <Compile Include="Service\SqlDirectServiceTest.cs" />
-    <Compile Include="Service\UserServiceTest.cs" />
     <Compile Include="Utils\ToolsTest.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -102,6 +99,7 @@
     </None>
     <EmbeddedResource Include="Resources\Folkeparken1404.csv" />
     <EmbeddedResource Include="Resources\medlemsregister.csv" />
+    <None Include="Resources\Filter.csv" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ImportLibrary\ImportLibrary.csproj">

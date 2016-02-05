@@ -36,7 +36,8 @@ namespace NRImporter.Tests.Service
             Assert.IsNotNull(result);
         }
 
-        [Test]
+        //
+        //[Test]
         public void AddResults()
         {
             const string resource = "NRImporter.Tests.Resources.Folkeparken1404.csv";
@@ -90,7 +91,7 @@ namespace NRImporter.Tests.Service
             }
         }
 
-        [Test]
+        //[Test]
         public void TestTimespan()
         {
             string[] values = { "6", "6:12", "6:12:14", "6:12:14:45",

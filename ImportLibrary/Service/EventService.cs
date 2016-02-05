@@ -61,7 +61,7 @@ namespace Northernrunners.ImportLibrary.Service
                     var eventResultDto = new EventResultDto
                     {
                         EventId = eventResult.Event.Id,
-                        AgeCategory = GetAgeCategory(result.User),
+                        AgeCategory = GetAgeCategory(result.User, eventResult.Event),
                         AgeGrade = GetAgeGrade(result.User, result.Time, eventResult.Event),
                         DateCreated = DateTime.Now,
                         Gender = result.User.Gender,
@@ -107,22 +107,14 @@ namespace Northernrunners.ImportLibrary.Service
         {
             var minutes = 60 * time.Hours + time.Minutes;
             var seconds = ((float)time.Seconds) / 60;
-            var sum = (minutes + seconds) * 60000 + new Random().Next(100, 10000);
+            var sum = (minutes + seconds) * 60000;
             return Convert.ToInt32(sum);
         }
 
-        private static double GetAgeGrade(User user)
-        {
-            //TODO: Finne agegrade basert på userid
-            return 23.17;
-        }
 
-        private static string GetAgeCategory(User user)
+        private static string GetAgeCategory(User user, Event ev)
         {
-            Console.WriteLine("User: " + user.Name + " " + user.DateOfBirth);
-            var dob = user.DateOfBirth;
-            var age = DateTime.Now.Year - user.DateOfBirth.Year;
-            Console.WriteLine("Age: " + age);
+            var age = ev.Date.Year - user.DateOfBirth.Year;
             if (age < 20)
             {
                 return "J";

@@ -22,9 +22,9 @@ namespace Northernrunners.ImportLibrary.Service
         public void InsertResultInEvent(ICollection<UserEventInfo> deltakere, Event ev)
         {
             var eventResult = new EventResult {Event = ev};
+            // Hvis bruker ikke fins blir dato satt til DateTime.MinValue, resultat vil legges inn i tempresult
             var usernames = deltakere.Select(deltaker => new User { Name = deltaker.Name, Gender = deltaker.Gender.ToUpper(), DateOfBirth = DateTime.MinValue }).ToList();
             
-            Tools.RandomizeDateOfBirth(usernames);
             var watch = new Stopwatch();
             watch.Start();
             var users = _userService.CreateAndGetUsers(usernames, new StreamWriter(Console.OpenStandardOutput()));
@@ -44,7 +44,13 @@ namespace Northernrunners.ImportLibrary.Service
                     time = "0:" + time;
                 }
                 result.Time = TimeSpan.Parse(time);
-                results.Add(result);
+                // For å hindre at bogus tid blir lagt inn. Står 0.00 flere steder i importfil
+                if (result.Time.TotalSeconds > 10)
+                {
+                    
+                    results.Add(result);
+                }
+                
 
             }
             eventResult.Results = results;

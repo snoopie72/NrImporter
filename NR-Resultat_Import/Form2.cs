@@ -28,16 +28,16 @@ namespace NR_Resultat_Import
             InitializeComponent();
             this._deltakere = deltakere;
             var bindingList = new BindingList<UserEventInfo>(deltakere.ToList());
-            var source = new BindingSource(bindingList, null);
+            var source = new BindingSource(bindingList,null);
             dataGridView1.DataSource = source;
-            dataGridView1.ReadOnly = true;
+            dataGridView1.ReadOnly = false;
             if (deltakere.First() != null)
             {
                 //var x = new MockedEventService();
                 var eventService = new EventService(new ResultDataService(sqlDirectService));
                 //textBox1.Text = x.GetEvents("adsf", 2016).ToList().FirstOrDefault().Id1.ToString();
                 //List<Event> eventer = eventService.GetEvents("adsf", DateTime.Now.Year).ToList();
-                var eventer = eventService.GetEvents(new DateTime(2014, 1, 1), DateTime.Now);
+                var eventer = eventService.GetEvents(new DateTime(2012, 1, 1), DateTime.Now);
                 if (eventer.Count >  0)
                 {
                     label2.Text = $"ID={eventer.First().Id}";

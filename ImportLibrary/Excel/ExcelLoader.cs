@@ -43,9 +43,9 @@ namespace Northernrunners.ImportLibrary.Excel
                     var user = new User
                     {
                         DateOfBirth = Tools.ParseDateMember(dato),
-                        Email = Convert.ToString(data[1]),
+                        Email = Convert.ToString(data[1]).Trim(),
                         Gender = gender,
-                        Name = Convert.ToString(data[0])
+                        Name = Convert.ToString(data[0]).Trim()
                     };
                     users.Add(user);
                 }
