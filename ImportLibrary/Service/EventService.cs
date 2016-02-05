@@ -15,8 +15,8 @@ namespace Northernrunners.ImportLibrary.Service
     {
         private Random _rnd;
         private readonly IResultDataService _resultDataService;
-        private CSharp.Context _context;
-        private FunctionObject _calculate;
+        private readonly CSharp.Context _context;
+        private readonly FunctionObject _calculate;
         public EventService(IResultDataService resultDataService)
         {
             _rnd = new Random();
@@ -44,7 +44,16 @@ namespace Northernrunners.ImportLibrary.Service
             return GetAllEvents().Where(t => t.Name.Contains(name)).ToList();            
         }
 
-        
+        public ICollection<TempResultDto> GetAllTempResults()
+        {
+            return _resultDataService.GetTempResults();
+        }
+
+        public void DeleteTempResult(TempResultDto tempResult)
+        {
+            _resultDataService.DeleteTempResult(tempResult);
+        }
+
 
         public Event GetEvent(int eventId)
         {
@@ -72,7 +81,7 @@ namespace Northernrunners.ImportLibrary.Service
                     };
                 if (result.User.DateOfBirth.Equals(DateTime.MinValue))
                 {
-                    var dataObject = Tools.Serialize(eventResultDto);
+                    var dataObject = Tools.Serialize(eventResult);
                     var tempResult = new TempResultDto
                     {
                         Data = dataObject,
@@ -170,5 +179,7 @@ namespace Northernrunners.ImportLibrary.Service
             return _resultDataService.GetAllEvents();
 
         } 
+
+        
     }
 }

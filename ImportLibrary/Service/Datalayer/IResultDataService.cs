@@ -22,6 +22,7 @@ namespace Northernrunners.ImportLibrary.Service.Datalayer
 
         ICollection<TempResultDto> GetTempResults();
 
+
         void DeleteTempResult(TempResultDto tempResultDto);
 
         ICollection<Event> GetAllEvents();

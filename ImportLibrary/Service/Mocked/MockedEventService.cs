@@ -51,6 +51,16 @@ namespace Northernrunners.ImportLibrary.Service.Mocked
             throw new NotImplementedException();
         }
 
+        public ICollection<TempResultDto> GetAllTempResults()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteTempResult(TempResultDto tempResult)
+        {
+            throw new NotImplementedException();
+        }
+
         public Event GetEvent(int eventId)
         {
             throw new NotImplementedException();
