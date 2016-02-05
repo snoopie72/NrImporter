@@ -19,7 +19,7 @@ namespace NR_Resultat_Import
         public Form3()
         {
             InitializeComponent();
-            //_assembly = Assembly.GetExecutingAssembly();
+            //_assembly = Assembly.GetExecutingAssembly();;
             var encoding = Encoding.GetEncoding("ISO-8859-1");
             var filter = @"C:\Users\KaiHugo\Documents\Kode\NrImporter\NRImporter.Tests\Resources\Filter.csv";
 
