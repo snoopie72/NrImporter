@@ -35,6 +35,7 @@
             this.LoadUsers = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.btnSubmitResults = new System.Windows.Forms.Button();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -106,6 +107,10 @@
             this.btnSubmitResults.UseVisualStyleBackColor = true;
             this.btnSubmitResults.Click += new System.EventHandler(this.btnSubmitResults_Click);
             // 
+            // backgroundWorker1
+            // 
+            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -135,5 +140,6 @@
         private System.Windows.Forms.Button LoadUsers;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button btnSubmitResults;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
     }
 }

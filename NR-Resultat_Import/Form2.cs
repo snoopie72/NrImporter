@@ -96,5 +96,10 @@ namespace NR_Resultat_Import
             }
             return list;
         }
+
+        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        {
+
+        }
     }
 }

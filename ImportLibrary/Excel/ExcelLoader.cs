@@ -23,7 +23,7 @@ namespace Northernrunners.ImportLibrary.Excel
                 where data[4].Contains(separator)
                 select new UserEventInfo
                 {
-                    Name = $"{data[1]} {data[2]}", Gender = data[3], Time = data[8], Stage = data[5], Place = data[11]
+                    Name = $"{data[1].Trim()} {data[2].Trim()}", Gender = data[3], Time = data[8], Stage = data[5], Place = data[11]
                 }).ToList();
         }
 
