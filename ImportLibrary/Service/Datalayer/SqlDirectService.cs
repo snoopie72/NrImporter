@@ -138,7 +138,7 @@ namespace Northernrunners.ImportLibrary.Service
                 catch (Exception e)
                 {
                     trans.Rollback();
-                    throw;
+                    //throw;
                 }
             }
              conn.Close();
