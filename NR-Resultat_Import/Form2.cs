@@ -63,20 +63,16 @@ namespace NR_Resultat_Import
 
         private void btnSubmitResults_Click(object sender, EventArgs e)
         {
-            var valid = CheckValidData(_deltakere);
-
-            if (valid.Count == 1)
+            try
             {
-                var ev = (Event) listBox1.SelectedItem;
-                _eventResultHandler.InsertResultInEvent(this._deltakere, ev);
+                this.Cursor = Cursors.WaitCursor;
+                Event ev = (Event)listBox1.SelectedItem;
+                this.backgroundWorker1.RunWorkerAsync(ev);
             }
-            else
+            finally
             {
-                string stages = valid.Aggregate("", (current, stage) => current + stage + " - ");
-                var message = "Inneholder flere events.. " + stages;
-                MessageBox.Show(message, @"Feil i fil", MessageBoxButtons.OK);
+                this.Cursor = Cursors.Default;
             }
-            
         }
 
         private List<string> CheckValidData(ICollection<UserEventInfo> collection)
@@ -87,6 +83,24 @@ namespace NR_Resultat_Import
                 list.Add(deltaker.Stage);
             }
             return list;
+        }
+
+        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        {
+            var valid = CheckValidData(_deltakere);
+
+            if (valid.Count == 1)
+            {
+                var ev = (Event)e.Argument;
+                //var ev = (Event)listBox1.SelectedItem;
+                _eventResultHandler.InsertResultInEvent(this._deltakere, ev);
+            }
+            else
+            {
+                string stages = valid.Aggregate("", (current, stage) => current + stage + " - ");
+                var message = "Inneholder flere events.. " + stages;
+                MessageBox.Show(message, @"Feil i fil", MessageBoxButtons.OK);
+            }
         }
     }
 }

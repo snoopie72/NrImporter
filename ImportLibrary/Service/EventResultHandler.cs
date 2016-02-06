@@ -48,7 +48,12 @@ namespace Northernrunners.ImportLibrary.Service
                     User = users.First(t => t.Name.Equals(deltaker.Name)),
                     Position = Convert.ToInt32(deltaker.Place)
                 };
-                var time = deltaker.Time.Substring(0, deltaker.Time.IndexOf(".", StringComparison.Ordinal));
+                var time = deltaker.Time;
+                try
+                {
+                    time = deltaker.Time.Substring(0, deltaker.Time.IndexOf(".", StringComparison.Ordinal));
+                }
+                catch (ArgumentOutOfRangeException) { }
                 if (time.Length < 6)
                 {
                     time = "0:" + time;
