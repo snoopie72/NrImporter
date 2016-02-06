@@ -1,22 +1,24 @@
-﻿using Northernrunners.ImportLibrary.Service.Mocked;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Configuration;
 using System.Windows.Forms;
 using System.IO;
 using Northernrunners.ImportLibrary.Excel;
+using Northernrunners.ImportLibrary.Service;
+using Northernrunners.ImportLibrary.Service.Datalayer;
 
 namespace NR_Resultat_Import
 {
     public partial class Form1 : Form
     {
+        private readonly EventResultHandler _handler;
         public Form1()
         {
+            var sqlDirectService = new SqlDirectService(ConfigurationManager.ConnectionStrings["db"].ConnectionString);
+            var datalayerService = new DatalayerService(sqlDirectService);
+            var eventService = new EventService(datalayerService);
+            _handler = new EventResultHandler(new UserService(datalayerService),
+                    eventService, new FilterService(datalayerService));
             InitializeComponent();
         }
 
@@ -36,8 +38,9 @@ namespace NR_Resultat_Import
         {
             using (var stream = new FileStream(textBox1.Text, FileMode.Open))
             {
-                var deltaker = ExcelLoader.LoadRaceResult(stream, "Northern Runners");
-                Form form2 = new Form2(deltaker);
+                var deltaker = new ExcelLoader().LoadRaceResult(stream);
+                deltaker = _handler.FilterDeltakere(deltaker);
+                Form form2 = new Form2(deltaker, _handler);
                 form2.ShowDialog(this);
             }
             
@@ -48,18 +51,15 @@ namespace NR_Resultat_Import
         {
             try
             {
-                FileInfo f = new FileInfo(textBox1.Text);
-                if (f.Exists)
-                    btnImport.Enabled = true;
-                else
-                    btnImport.Enabled = false;
+                var f = new FileInfo(textBox1.Text);
+                btnImport.Enabled = f.Exists;
             }
             catch (Exception) {}
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            Form3 f3 = new Form3();
+            var f3 = new Form3(_handler);
             f3.ShowDialog(this);
         }
     }

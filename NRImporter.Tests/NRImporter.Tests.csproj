@@ -76,6 +76,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Excel\ExcelLoaderTest.cs" />
     <Compile Include="JS\Tester.cs" />
     <Compile Include="Service\EventServiceTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

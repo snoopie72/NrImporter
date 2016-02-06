@@ -11,9 +11,9 @@ namespace Northernrunners.ImportLibrary.Service
 {
     public class UserService:IUserService
     {
-        private readonly IResultDataService _resultDataService;
+        private readonly IDatalayerService _resultDataService;
         
-        public UserService(IResultDataService resultDataService)
+        public UserService(IDatalayerService resultDataService)
         {
             _resultDataService = resultDataService;
         }

@@ -1,18 +1,12 @@
-﻿using Northernrunners.ImportLibrary.Service.Mocked;
-using Northernrunners.ImportLibrary.Poco;
+﻿using Northernrunners.ImportLibrary.Poco;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Northernrunners.ImportLibrary.Service;
 using Northernrunners.ImportLibrary.Service.Datalayer;
-using Northernrunners.ImportLibrary.Utils;
 
 namespace NR_Resultat_Import
 {
@@ -20,10 +14,9 @@ namespace NR_Resultat_Import
     {
         private readonly ICollection<UserEventInfo> _deltakere;
         private readonly EventResultHandler _eventResultHandler;
-        public Form2(ICollection<UserEventInfo> deltakere)
+        public Form2(ICollection<UserEventInfo> deltakere, EventResultHandler handler)
         {
-            var sqlDirectService = new SqlDirectService(ConfigurationManager.ConnectionStrings["db"].ConnectionString);
-            _eventResultHandler = new EventResultHandler(new UserService(new ResultDataService(sqlDirectService)), new EventService(new ResultDataService(sqlDirectService)));
+            _eventResultHandler = handler;
             
             InitializeComponent();
             this._deltakere = deltakere;
@@ -34,10 +27,9 @@ namespace NR_Resultat_Import
             if (deltakere.First() != null)
             {
                 //var x = new MockedEventService();
-                var eventService = new EventService(new ResultDataService(sqlDirectService));
                 //textBox1.Text = x.GetEvents("adsf", 2016).ToList().FirstOrDefault().Id1.ToString();
                 //List<Event> eventer = eventService.GetEvents("adsf", DateTime.Now.Year).ToList();
-                var eventer = eventService.GetEvents(new DateTime(2012, 1, 1), DateTime.Now);
+                var eventer = _eventResultHandler.GetEvents(new DateTime(2012, 1, 1), DateTime.Now);
                 if (eventer.Count >  0)
                 {
                     label2.Text = $"ID={eventer.First().Id}";

@@ -13,15 +13,15 @@ using Northernrunners.ImportLibrary.Utils;
 
 namespace Northernrunners.ImportLibrary.Service.Datalayer
 {
-    public class ResultDataService:IResultDataService
+    public class DatalayerService:IDatalayerService
     {
         private readonly ISqlDirectService _sqlDirectService;
         private readonly Assembly _assembly;
 
-        public ResultDataService(ISqlDirectService sqlDirectService)
+        public DatalayerService(ISqlDirectService sqlDirectService)
         {
             _sqlDirectService = sqlDirectService;
-            _assembly = Assembly.GetAssembly(typeof(ResultDataService));
+            _assembly = Assembly.GetAssembly(typeof(DatalayerService));
         }
 
 
@@ -233,6 +233,42 @@ namespace Northernrunners.ImportLibrary.Service.Datalayer
         public void UpdateUser(UserDto user)
         {
             throw new NotImplementedException();
+        }
+
+        public ICollection<FilterDto> GetFilters()
+        {
+            var sql = "select * from kai_filter";
+            var query = new Query()
+            {
+                Sql = sql
+            };
+            var result = _sqlDirectService.RunCommand(query);
+            return result.Select(row => new FilterDto
+            {
+                FilterKey = Convert.ToString(row["filterkey"]), FilterValue = Convert.ToString(row["filtervalue"]), Id = Convert.ToInt32(row["id"])
+            }).ToList();
+            
+
+        }
+
+        public void SaveFilters(ICollection<FilterDto> filters)
+        {
+            var queries = new List<Query>();
+            var sql = "delete from kai_filter";
+            var query = new Query {Sql = sql};
+            queries.Add(query);
+            sql = "insert into kai_filter values (@id, @key, @value)";
+            var filterList = filters.ToList();
+            for (var i = 0; i < filters.Count; i++)
+            {
+                query = new Query {Sql = sql};
+                query.ParameterValues.Add(new Parameter("@id", filterList[i].Id));
+                query.ParameterValues.Add(new Parameter("@key", filterList[i].FilterKey));
+                query.ParameterValues.Add(new Parameter("@value", filterList[i].FilterValue));
+                queries.Add(query);
+            }
+            _sqlDirectService.RunCommandsInSingleTransaction(queries);
+
         }
 
         private static List<string> GetParams(string sql)

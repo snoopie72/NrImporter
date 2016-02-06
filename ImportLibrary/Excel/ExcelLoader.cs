@@ -10,24 +10,63 @@ using Northernrunners.ImportLibrary.Utils;
 
 namespace Northernrunners.ImportLibrary.Excel
 {
-    public static class ExcelLoader
+    public  class ExcelLoader
     {
-        public static ICollection<UserEventInfo> LoadRaceResult(Stream input, string separator)
+        private const string ColumnFirstNameIdentifier = "Firstname";
+        private const string ColumnLastNameIdentifier = "Surname";
+        private const string ColumnGenderIdentifier = "Gender";
+        private const string ColumnTimeIdentifier = "Total Time";
+        private const string ColumnStageIdentifier = "Stage";
+        private const string ColumnPlaceIdentifier = "Place Class";
+        private const string ColumnClubIdentifier = "Club";
+        public  ICollection<UserEventInfo> LoadRaceResult(Stream input)
         {
             var enc = Encoding.GetEncoding("ISO-8859-1");
 
-            var lines = StreamToString(input, enc);
+            var lines = StreamToString(input, enc).ToList();
+            var header = lines[0].Split(';');
+            var firstNameColumn = FindColumn(header, ColumnFirstNameIdentifier);
+            var lastNameColumn = FindColumn(header, ColumnLastNameIdentifier);
+            var genderColumn = FindColumn(header, ColumnGenderIdentifier);
+            var timeColumn = FindColumn(header, ColumnTimeIdentifier);
+            var stageColumn = FindColumn(header, ColumnStageIdentifier);
+            var placeColumn = FindColumn(header, ColumnPlaceIdentifier);
+            var clubColumn = FindColumn(header, ColumnClubIdentifier);
+
+
+            lines = lines.GetRange(1, lines.Count - 1);
             return (from t in lines
                 select t.Split(";".ToCharArray(), StringSplitOptions.None)
-                into data
-                where data[4].Contains(separator)
+                into data               
                 select new UserEventInfo
                 {
-                    Name = $"{data[1]} {data[2]}", Gender = data[3], Time = data[8], Stage = data[5], Place = data[11]
+                    //Name = $"{data[1]} {data[2]}", Gender = data[3], Time = data[8], Stage = data[5], Place = data[11]
+                    Firstname = firstNameColumn > -1 ? data[firstNameColumn] : null,
+                    Lastname = lastNameColumn > -1 ? data[lastNameColumn] : null,
+                    Gender = genderColumn > -1 ? data[genderColumn] : null,
+                    Time = timeColumn > -1 ? data[timeColumn] : null,
+                    Stage = stageColumn > -1 ? data[stageColumn] : null,
+                    Place = placeColumn > -1 ? data[placeColumn] : null,
+                    Club = clubColumn > -1 ? data[clubColumn] : null,
+
+
                 }).ToList();
         }
 
-        public static ICollection<User> LoadMemberFile(Stream input)
+        private static int FindColumn(IReadOnlyList<string> header, string columnIdentifier)
+        {
+            var i = 0;
+            for (; i < header.Count; i++)
+            {
+                if (header[i].Equals(columnIdentifier))
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        public  ICollection<User> LoadMemberFile(Stream input)
         {
             var enc = Encoding.GetEncoding("ISO-8859-1");
             var lines = StreamToString(input, enc);
@@ -38,7 +77,6 @@ namespace Northernrunners.ImportLibrary.Excel
                 if (i > 0) {
                     var data = line.Split(';');
                     var dato = Convert.ToString(data[6]);
-                    Console.WriteLine(dato);
                     var gender = data[7].Equals("Mann") ? "M" : "F";
                     var user = new User
                     {
@@ -57,7 +95,7 @@ namespace Northernrunners.ImportLibrary.Excel
 
 
         } 
-        private static IEnumerable<string> StreamToString(Stream stream, Encoding encoding)
+        private  IEnumerable<string> StreamToString(Stream stream, Encoding encoding)
         {
             var list = new List<string>();
             using (var streamReader = new StreamReader(stream, encoding))

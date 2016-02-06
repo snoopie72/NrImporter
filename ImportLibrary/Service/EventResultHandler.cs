@@ -15,12 +15,14 @@ namespace Northernrunners.ImportLibrary.Service
     {
         private readonly IUserService _userService;
         private readonly IEventService _eventService;
+        private readonly IFilterService _filterService;
 
-        public EventResultHandler(IUserService userService, IEventService eventService)
+        public EventResultHandler(IUserService userService, IEventService eventService, IFilterService filterService)
         {
             
             _userService = userService;
             _eventService = eventService;
+            _filterService = filterService;
         }
 
         public void InsertResultInEvent(ICollection<UserEventInfo> deltakere, Event ev)
@@ -94,17 +96,8 @@ namespace Northernrunners.ImportLibrary.Service
         public void UpdateTempResults()
         {
             var tempResults = _eventService.GetAllTempResults();
-            var itemsToDelete = new List<TempResultDto>();
             var invalidUsers = _userService.GetAllUsersWithInvalidDate();
-            foreach (var tempResult in tempResults)
-            {
-                var userId = tempResult.UserId;
-                var resultHasInvalidUser = invalidUsers.FirstOrDefault(t => t.Id.Equals(userId));
-                if (resultHasInvalidUser == null) 
-                {
-                    itemsToDelete.Add(tempResult);
-                }
-            }
+            var itemsToDelete = (from tempResult in tempResults let userId = tempResult.UserId let resultHasInvalidUser = invalidUsers.FirstOrDefault(t => t.Id.Equals(userId)) where resultHasInvalidUser == null select tempResult).ToList();
             foreach (var itemToDelete in itemsToDelete)
             {
                 var result = Tools.Deserializate<Result>(itemToDelete.Data);
@@ -130,5 +123,41 @@ namespace Northernrunners.ImportLibrary.Service
                 _eventService.DeleteTempResult(itemToDelete);
             }
         }
+
+        public ICollection<Filter> GetFilters()
+        {
+            return _filterService.GetFilters();
+        }
+
+        public void SaveFilters(ICollection<Filter> filters)
+        {
+            _filterService.SaveFilters(filters);
+        }
+
+        public ICollection<Event> GetEvents(DateTime from, DateTime to)
+        {
+            return _eventService.GetEvents(from, to);
+        }
+
+        public ICollection<UserEventInfo> FilterDeltakere(ICollection<UserEventInfo> deltakere)
+        {
+            var filters = _filterService.GetFilters();
+            var newList = new List<UserEventInfo>();
+            
+            foreach (var filter in filters)
+            {
+                
+                if (filter.Type.Equals(FilterType.Contains))
+                {
+                    newList.AddRange(deltakere.Where(t => t.Club.Contains(filter.Value)).ToList());                    
+                }
+                if (filter.Type.Equals(FilterType.Equals))
+                {
+                    newList.AddRange(deltakere.Where(t => t.Club.Equals(filter.Value)).ToList());
+                }
+            }
+            return newList.Distinct().ToList();
+        }
+
     }
 }

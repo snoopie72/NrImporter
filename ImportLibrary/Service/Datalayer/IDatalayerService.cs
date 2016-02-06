@@ -8,7 +8,7 @@ using Northernrunners.ImportLibrary.Poco;
 
 namespace Northernrunners.ImportLibrary.Service.Datalayer
 {
-    public interface IResultDataService
+    public interface IDatalayerService
     {
         void AddEventResults(EventResultDto eventResultDto);
 
@@ -28,5 +28,9 @@ namespace Northernrunners.ImportLibrary.Service.Datalayer
         ICollection<Event> GetAllEvents();
 
         void UpdateUser(UserDto user);
+
+        ICollection<FilterDto> GetFilters();
+
+        void SaveFilters(ICollection<FilterDto> filters);
     }
 }

@@ -8,124 +8,91 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using Northernrunners.ImportLibrary.Poco;
+using Northernrunners.ImportLibrary.Service;
+
 //using System.Reflection;
 
 namespace NR_Resultat_Import
 {
     public partial class Form3 : Form
     {
+        private readonly EventResultHandler _handler;
         //private Assembly _assembly;
 
-        public Form3()
+        public Form3(EventResultHandler handler)
         {
+            _handler = handler;
             InitializeComponent();
-            //_assembly = Assembly.GetExecutingAssembly();;
-            var encoding = Encoding.GetEncoding("ISO-8859-1");
-            var filter = @"C:\Users\KaiHugo\Documents\Kode\NrImporter\NRImporter.Tests\Resources\Filter.csv";
-
-            //using (var stream = _assembly.GetManifestResourceStream(filter))
-            using (var stream = new FileStream(filter, FileMode.Open))
+            
+            
+            var filters = _handler.GetFilters();
+            var filterList = filters.ToList();
+            for (var i = 0; i < filters.Count; i++)
             {
-                int i = 1;
-                using (var streamReader = new StreamReader(stream, encoding))
-                {
-                    string line;
-                    while ((line = streamReader.ReadLine()) != null)
-                    {
-                        line = line.Replace("\"", "");
-                        Controls["label" + i].Text = line.Split(';')[0];
-                        Controls["textBox" + i].Text = line.Split(';')[1];
-                        i++;
-                    }
-                }
+                var j = i + 1;
+                Controls["label" + j].Text = filterList[i].Type.ToString();
+                Controls["textBox" + j].Text = filterList[i].Value;
             }
         }
 
         private void label1_Click(object sender, EventArgs e)
         {
-            if (label1.Text.Equals("Contains"))
-                label1.Text = "Equals";
-            else
-                label1.Text = "Contains";
+            label1.Text = label1.Text.Equals(FilterType.Contains.ToString()) ? FilterType.Equals.ToString() : FilterType.Contains.ToString();
         }
 
         private void label2_Click(object sender, EventArgs e)
         {
-            if (label2.Text.Equals("Contains"))
-                label2.Text = "Equals";
-            else
-                label2.Text = "Contains";
+            label2.Text = label2.Text.Equals(FilterType.Contains.ToString()) ? FilterType.Equals.ToString() : FilterType.Contains.ToString();
         }
 
         private void label3_Click(object sender, EventArgs e)
         {
-            if (label3.Text.Equals("Contains"))
-                label3.Text = "Equals";
-            else
-                label3.Text = "Contains";
+            label3.Text = label3.Text.Equals(FilterType.Contains.ToString()) ? FilterType.Equals.ToString() : FilterType.Contains.ToString();
         }
 
         private void label4_Click(object sender, EventArgs e)
         {
-            if (label4.Text.Equals("Contains"))
-                label4.Text = "Equals";
-            else
-                label4.Text = "Contains";
+            label4.Text = label4.Text.Equals(FilterType.Contains.ToString()) ? FilterType.Equals.ToString() : FilterType.Contains.ToString();
         }
 
         private void label5_Click(object sender, EventArgs e)
         {
-            if (label5.Text.Equals("Contains"))
-                label5.Text = "Equals";
-            else
-                label5.Text = "Contains";
+            label5.Text = label5.Text.Equals(FilterType.Contains.ToString()) ? FilterType.Equals.ToString() : FilterType.Contains.ToString();
         }
 
         private void label6_Click(object sender, EventArgs e)
         {
-            if (label6.Text.Equals("Contains"))
-                label6.Text = "Equals";
-            else
-                label6.Text = "Contains";
+            label6.Text = label6.Text.Equals(FilterType.Contains.ToString()) ? FilterType.Equals.ToString() : FilterType.Contains.ToString();
         }
 
         private void label7_Click(object sender, EventArgs e)
         {
-            if (label7.Text.Equals("Contains"))
-                label7.Text = "Equals";
-            else
-                label7.Text = "Contains";
+            label7.Text = label7.Text.Equals(FilterType.Contains.ToString()) ? FilterType.Equals.ToString() : FilterType.Contains.ToString();
         }
 
         private void label8_Click(object sender, EventArgs e)
         {
-            if (label8.Text.Equals("Contains"))
-                label8.Text = "Equals";
-            else
-                label8.Text = "Contains";
+            label8.Text = label8.Text.Equals(FilterType.Contains.ToString()) ? FilterType.Equals.ToString() : FilterType.Contains.ToString();
         }
 
         private void Form3_FormClosing(object sender, FormClosingEventArgs e)
         {
-            var encoding = Encoding.GetEncoding("ISO-8859-1");
-            var filter = @"C:\Users\KaiHugo\Documents\Kode\NrImporter\NRImporter.Tests\Resources\Filter.csv";
-
-            using (var stream = new FileStream(filter, FileMode.Create))
+            var filters = new List<Filter>();
+            for (var i = 1; i < 9; i++)
             {
-                using (var streamWriter = new StreamWriter(stream, encoding))
+                var value = Controls["textBox" + i].Text;
+                if (string.IsNullOrEmpty(value)) continue;
+                var key = Controls["label" + i].Text;
+                var filter = new Filter
                 {
-                    for (int i = 1; i < 9; i++)
-                    {
-                        string value = Controls["textBox" + i].Text;
-                        if (value != null && value.Length > 0)
-                        {
-                            string line = Controls["label" + i].Text + ";" + value;
-                            streamWriter.WriteLine(line);
-                        }
-                    }
-                    streamWriter.Flush();
-                }
+                    Type =
+                        key.Equals(FilterType.Equals.ToString()) ? FilterType.Equals : FilterType.Contains,
+                    Value = value
+                };
+                filters.Add(filter);
             }
+            _handler.SaveFilters(filters);
         }
     }
 }

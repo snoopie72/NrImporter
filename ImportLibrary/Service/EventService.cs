@@ -16,10 +16,10 @@ namespace Northernrunners.ImportLibrary.Service
     public class EventService:IEventService
     {
         private Random _rnd;
-        private readonly IResultDataService _resultDataService;
+        private readonly IDatalayerService _resultDataService;
         private readonly CSharp.Context _context;
         private readonly FunctionObject _calculate;
-        public EventService(IResultDataService resultDataService)
+        public EventService(IDatalayerService resultDataService)
         {
             _rnd = new Random();
             _resultDataService = resultDataService;

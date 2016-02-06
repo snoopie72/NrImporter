@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
 using System.Linq;
@@ -15,25 +16,31 @@ namespace NRImporter.Tests.Service
     [TestFixture]
     internal class EventServiceTest
     {
-        private EventService _service;
+        private EventService _eventService;
         private UserService _userService;
         private Assembly _assembly;
+        private FilterService _filterService;
+        private EventResultHandler _handler;
         [SetUp]
         public void Setup()
         {
-            _service = new EventService(new ResultDataService(new SqlDirectService(ConfigurationManager.ConnectionStrings["db"].ConnectionString)));
+            _eventService = new EventService(new DatalayerService(new SqlDirectService(ConfigurationManager.ConnectionStrings["db"].ConnectionString)));
             _assembly = Assembly.GetExecutingAssembly();
             _userService =
                 new UserService(
-                    new ResultDataService(
+                    new DatalayerService(
                         new SqlDirectService(ConfigurationManager.ConnectionStrings["db"].ConnectionString)));
+            _filterService = new FilterService(new DatalayerService(
+                        new SqlDirectService(ConfigurationManager.ConnectionStrings["db"].ConnectionString)));
+            _handler = new EventResultHandler(_userService, _eventService, _filterService);
+
         }
 
         [Test]
         public void TestGetEventById()
         {
             var id = 1;
-            var result = _service.GetEvent(id);
+            var result = _eventService.GetEvent(id);
             Assert.IsNotNull(result);
         }
 
@@ -44,70 +51,76 @@ namespace NRImporter.Tests.Service
             const string resource = "NRImporter.Tests.Resources.Folkeparken1404.csv";
             const string filter = "Northern Runners";
 
-            var handler = new EventResultHandler(_userService, _service);
             Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("no-NO");
             using (var stream = _assembly.GetManifestResourceStream(resource))
             {
-                var deltakere = ExcelLoader.LoadRaceResult(stream, filter);                
-                handler.InsertResultInEvent(deltakere, new Event { Id = 4 });
+                var deltakere = new ExcelLoader().LoadRaceResult(stream);                
+                _handler.InsertResultInEvent(deltakere, new Event { Id = 4 });
                 
             }
             
 
         }
 
-        [Test]
-        public void TestLoadIssue()
-        {
-            var resource = "NRImporter.Tests.Resources.Folkeparken1404.csv";
-            var filter = "Northern Runners";
-
-            using (var stream = _assembly.GetManifestResourceStream(resource))
-            {
-                var deltakere = ExcelLoader.LoadRaceResult(stream, filter);
-                foreach (var deltaker in deltakere)
-                {
-                    Console.WriteLine(deltaker.Name);
-                }
-            }
-
-
-        }
+        
 
         [Test]
         public void TestUpdateInvalidResults()
         {
-            var handler = new EventResultHandler(_userService, _service);
-            handler.UpdateTempResults();
+            _handler.UpdateTempResults();
         }
 
         [Test]
         public void TestLoadMembers()
         {
-            var handler = new EventResultHandler(_userService, _service);
-
+            
             const string resource = "NRImporter.Tests.Resources.medlemsregister.csv";
 
             using (var stream = _assembly.GetManifestResourceStream(resource))
             {
-                var users = ExcelLoader.LoadMemberFile(stream);
+                var users = new ExcelLoader().LoadMemberFile(stream);
                 foreach (var user in users)
                 {
                     Console.WriteLine(user.Name + " " + user.Gender + " " + user.DateOfBirth);
                 }
-                handler.CreateOrIgnoreUsers(users);                
+                _handler.CreateOrIgnoreUsers(users);                
             }
         }
 
         [Test]
         public void TestGetInvalidUsers()
         {
-            var handler = new EventResultHandler(_userService, _service);
             var users = _userService.GetAllUsersWithInvalidDate();
             foreach (var x in users)
             {
                 Console.WriteLine(x.Name);
             }
+        }
+
+        [Test]
+        public void TestSaveFilters()
+        {
+            var filters = new List<Filter>
+            {
+                new Filter
+                {
+                    Type = FilterType.Contains,
+                    Value = "Northern Runners"
+                },
+                new Filter
+                {
+                    Type = FilterType.Equals,
+                    Value = "NR"
+                }
+            };
+            _filterService.SaveFilters(filters);
+        }
+
+        [Test]
+        public void TestLoadFilters()
+        {
+            var filters = _filterService.GetFilters();
+            Assert.IsNotNull(filters);
         }
 
         //[Test]
