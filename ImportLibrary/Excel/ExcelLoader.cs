@@ -40,14 +40,13 @@ namespace Northernrunners.ImportLibrary.Excel
                 into data               
                 select new UserEventInfo
                 {
-                    //Name = $"{data[1]} {data[2]}", Gender = data[3], Time = data[8], Stage = data[5], Place = data[11]
-                    Firstname = firstNameColumn > -1 ? data[firstNameColumn] : null,
-                    Lastname = lastNameColumn > -1 ? data[lastNameColumn] : null,
-                    Gender = genderColumn > -1 ? data[genderColumn] : null,
-                    Time = timeColumn > -1 ? data[timeColumn] : null,
-                    Stage = stageColumn > -1 ? data[stageColumn] : null,
-                    Place = placeColumn > -1 ? data[placeColumn] : null,
-                    Club = clubColumn > -1 ? data[clubColumn] : null,
+                    Firstname = firstNameColumn > -1 ? data[firstNameColumn].Trim() : null,
+                    Lastname = lastNameColumn > -1 ? data[lastNameColumn].Trim() : null,
+                    Gender = genderColumn > -1 ? data[genderColumn].Trim() : null,
+                    Time = timeColumn > -1 ? data[timeColumn].Trim() : null,
+                    Stage = stageColumn > -1 ? data[stageColumn].Trim() : null,
+                    Place = placeColumn > -1 ? data[placeColumn].Trim() : null,
+                    Club = clubColumn > -1 ? data[clubColumn].Trim() : null,
 
 
                 }).ToList();
