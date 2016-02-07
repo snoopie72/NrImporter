@@ -1,1 +1,1 @@
-﻿select p.id, p.display_name as name, p.user_email as email, max(IF(pa.meta_key='wp-athletics_gender', pa.meta_value, null)) as gender, max(IF(pa.meta_key='wp-athletics_dob', pa.meta_value, null)) as dob from kai_users p left join kai_usermeta as pa on p.id = pa.user_id group by p.id
+﻿select p.id, p.display_name as name, p.user_email as email, max(IF(pa.meta_key='wp-athletics_gender', pa.meta_value, null)) as gender, max(IF(pa.meta_key='wp-athletics_dob', pa.meta_value, null)) as dob from wp_users p left join wp_usermeta as pa on p.id = pa.user_id group by p.id

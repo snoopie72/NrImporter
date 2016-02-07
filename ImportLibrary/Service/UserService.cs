@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using Microsoft.Scripting.Utils;
 using Northernrunners.ImportLibrary.Dto;
 using Northernrunners.ImportLibrary.Poco;
 using Northernrunners.ImportLibrary.Service.Datalayer;
@@ -65,7 +66,8 @@ namespace Northernrunners.ImportLibrary.Service
             CamelCaseUsers(users);
             var usersFromDb = _resultDataService.GetAllUsers();
             var usersToCreate = (from user in users let userFound = usersFromDb.FirstOrDefault(t => t.Name.Equals(user.Name)) where userFound == null select user).ToList();
-            if (usersToCreate.Count == 0)
+            var usersToUpdate = usersFromDb.Where(user => string.IsNullOrEmpty(user.Gender)).ToList();
+            if (usersToCreate.Count == 0 && usersToUpdate.Count == 0)
                 return usersFromDb.Select(userDto => new User
                 {
                     DateOfBirth = userDto.DateOfBirth,
@@ -74,6 +76,18 @@ namespace Northernrunners.ImportLibrary.Service
                     Gender = userDto.Gender,
                     Name = userDto.Name
                 }).ToList();
+
+            foreach (var user in usersToUpdate)
+            {
+                var userInUserList = users.FirstOrDefault(t => t.Name.Equals(user.Name));
+                if (userInUserList != null)
+                {
+                    userInUserList.Id = user.Id;
+                    UpdateUser(userInUserList);
+                }
+                    
+                
+            }
             foreach (var user in usersToCreate)
             {
                 AddUser(user);

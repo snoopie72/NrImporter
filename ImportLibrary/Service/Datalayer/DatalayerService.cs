@@ -13,7 +13,7 @@ using Northernrunners.ImportLibrary.Utils;
 
 namespace Northernrunners.ImportLibrary.Service.Datalayer
 {
-    public class DatalayerService:IDatalayerService
+    public class DatalayerService : IDatalayerService
     {
         private readonly ISqlDirectService _sqlDirectService;
         private readonly Assembly _assembly;
@@ -32,7 +32,7 @@ namespace Northernrunners.ImportLibrary.Service.Datalayer
             _sqlDirectService.RunCommand(query);
 
 
-            
+
         }
 
         private Query GetAddEventResultQuery(EventResultDto eventResultDto)
@@ -44,9 +44,9 @@ namespace Northernrunners.ImportLibrary.Service.Datalayer
             using (var stream = _assembly.GetManifestResourceStream(userTemplate))
             {
                 var sql = Tools.StreamToString(stream);
-                query = new Query {Sql = sql};
+                query = new Query { Sql = sql };
             }
-            var properties = typeof (EventResultDto).GetProperties(BindingFlags.Public | BindingFlags.Instance).ToList();
+            var properties = typeof(EventResultDto).GetProperties(BindingFlags.Public | BindingFlags.Instance).ToList();
             var sqlParams = GetParams(query.Sql);
 
             if (properties.Count != sqlParams.Count)
@@ -81,15 +81,20 @@ namespace Northernrunners.ImportLibrary.Service.Datalayer
                 var stopwatch = new Stopwatch();
                 stopwatch.Start();
                 var sql = Tools.StreamToString(stream);
-                var query = new Query {Sql = sql};
+                var query = new Query { Sql = sql };
                 var result = _sqlDirectService.RunCommand(query);
                 var returnList = new List<UserDto>();
                 foreach (var d in result)
                 {
+                    DateTime dateOfBirth = DateTime.MinValue;
+                    if (!string.IsNullOrEmpty(Convert.ToString(d["dob"])))
+                    {
+                        dateOfBirth = Tools.ParseDate(Convert.ToString(d["dob"]));
+                    }
                     var x2 =
                         new UserDto
                         {
-                            DateOfBirth = Tools.ParseDate(Convert.ToString(d["dob"])),
+                            DateOfBirth = dateOfBirth,
                             Gender = Convert.ToString(d["gender"]),
                             Email = Convert.ToString(d["email"]),
                             Name = Convert.ToString(d["name"]),
@@ -98,7 +103,7 @@ namespace Northernrunners.ImportLibrary.Service.Datalayer
                     returnList.Add(x2);
                     stopwatch.Stop();
                     Console.WriteLine("Time: " + stopwatch.ElapsedMilliseconds);
-                    
+
                 }
                 return returnList;
             }
@@ -108,7 +113,7 @@ namespace Northernrunners.ImportLibrary.Service.Datalayer
 
         public void AddUser(UserDto user)
         {
-            
+
             //if (user.DateOfBirth.Equals(DateTime.MinValue))
             //{
             //    user.DateOfBirth = Tools.Randomize(new Random());
@@ -133,7 +138,7 @@ namespace Northernrunners.ImportLibrary.Service.Datalayer
 
             queries.Add(query);
 
-            query = new Query { Sql = "select id from kai_users where user_login = @username" };
+            query = new Query { Sql = "select id from wp_users where user_login = @username" };
             query.ParameterValues.Add(new Parameter("username", username));
             queries.Add(query);
             var result = _sqlDirectService.RunCommandsInSingleTransaction(queries);
@@ -181,7 +186,7 @@ namespace Northernrunners.ImportLibrary.Service.Datalayer
                 query = new Query { Sql = sql };
 
             }
-            
+
             query.ParameterValues.Add(new Parameter("@userid", tempResultDto.UserId));
             query.ParameterValues.Add(new Parameter("@registered", tempResultDto.Registered));
             query.ParameterValues.Add(new Parameter("@data", tempResultDto.Data));
@@ -195,7 +200,7 @@ namespace Northernrunners.ImportLibrary.Service.Datalayer
 
         public ICollection<TempResultDto> GetTempResults()
         {
-            var sql = "select * from kai_tempresults";
+            var sql = "select * from wp_tempresults";
             var query = new Query()
             {
                 Sql = sql
@@ -203,22 +208,26 @@ namespace Northernrunners.ImportLibrary.Service.Datalayer
             var results = _sqlDirectService.RunCommand(query);
             return results.Select(row => new TempResultDto
             {
-                Data = Convert.ToString(row["data"]), Id = Convert.ToInt32(row["id"]), Registered = Convert.ToDateTime(row["registered"]), UserId = Convert.ToInt32(row["userid"]), EventId = Convert.ToInt32(row["userid"])
+                Data = Convert.ToString(row["data"]),
+                Id = Convert.ToInt32(row["id"]),
+                Registered = Convert.ToDateTime(row["registered"]),
+                UserId = Convert.ToInt32(row["userid"]),
+                EventId = Convert.ToInt32(row["userid"])
             }).ToList();
-            
+
         }
 
         public void DeleteTempResult(TempResultDto tempResultDto)
         {
-            var sql = "delete from kai_tempresults where id = @id";
-            var query = new Query {Sql = sql};
+            var sql = "delete from wp_tempresults where id = @id";
+            var query = new Query { Sql = sql };
             query.ParameterValues.Add(new Parameter("@id", tempResultDto.Id));
             _sqlDirectService.RunCommand(query);
         }
 
         public ICollection<Event> GetAllEvents()
         {
-            var sql = "SELECT a.date, a.id, a.name, b.distance_meters FROM kai_wpa_event a, kai_wpa_event_cat b where a.event_cat_id = b.id";
+            var sql = "SELECT a.date, a.id, a.name, b.distance_meters FROM wp_wpa_event a, wp_wpa_event_cat b where a.event_cat_id = b.id";
             var query = new Query { Sql = sql };
             var result = _sqlDirectService.RunCommand(query);
             return result.Select(item => new Event
@@ -232,12 +241,24 @@ namespace Northernrunners.ImportLibrary.Service.Datalayer
 
         public void UpdateUser(UserDto user)
         {
-            throw new NotImplementedException();
+            var sql = "delete from wp_usermeta where user_id = @id and meta_key like 'wp-athletics%'";
+            var query = new Query {Sql = sql};
+            query.ParameterValues.Add(new Parameter("@id", user.Id));
+            _sqlDirectService.RunCommand(query);
+
+            sql =
+                "INSERT INTO `wp_usermeta` VALUES (null, @userid,'wp-athletics_dob',@dob),(null, @userid,'wp-athletics_gender',@gender), (null,@userid, 'wp-athletics_hide_dob', 'yes')";
+            query = new Query {Sql = sql};
+            query.ParameterValues.Add(new Parameter("@userid", user.Id));
+            query.ParameterValues.Add(new Parameter("@dob", Tools.ParseDate(user.DateOfBirth)));
+            query.ParameterValues.Add(new Parameter("@gender", user.Gender));
+            _sqlDirectService.RunCommand(query);
+
         }
 
         public ICollection<FilterDto> GetFilters()
         {
-            var sql = "select * from kai_filter";
+            var sql = "select * from wp_filter";
             var query = new Query()
             {
                 Sql = sql
@@ -245,23 +266,25 @@ namespace Northernrunners.ImportLibrary.Service.Datalayer
             var result = _sqlDirectService.RunCommand(query);
             return result.Select(row => new FilterDto
             {
-                FilterKey = Convert.ToString(row["filterkey"]), FilterValue = Convert.ToString(row["filtervalue"]), Id = Convert.ToInt32(row["id"])
+                FilterKey = Convert.ToString(row["filterkey"]),
+                FilterValue = Convert.ToString(row["filtervalue"]),
+                Id = Convert.ToInt32(row["id"])
             }).ToList();
-            
+
 
         }
 
         public void SaveFilters(ICollection<FilterDto> filters)
         {
             var queries = new List<Query>();
-            var sql = "delete from kai_filter";
-            var query = new Query {Sql = sql};
+            var sql = "delete from wp_filter";
+            var query = new Query { Sql = sql };
             queries.Add(query);
-            sql = "insert into kai_filter values (@id, @key, @value)";
+            sql = "insert into wp_filter values (@id, @key, @value)";
             var filterList = filters.ToList();
             for (var i = 0; i < filters.Count; i++)
             {
-                query = new Query {Sql = sql};
+                query = new Query { Sql = sql };
                 query.ParameterValues.Add(new Parameter("@id", filterList[i].Id));
                 query.ParameterValues.Add(new Parameter("@key", filterList[i].FilterKey));
                 query.ParameterValues.Add(new Parameter("@value", filterList[i].FilterValue));

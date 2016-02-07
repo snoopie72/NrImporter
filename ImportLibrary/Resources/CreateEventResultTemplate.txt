@@ -1,1 +1,1 @@
-﻿INSERT INTO kai_wpa_result VALUES (NULL,@DateCreated,@UserId,@EventId,@Time,null,@Position,@AgeCategory,@Gender,0,@AgeGrade)
+﻿INSERT INTO wp_wpa_result VALUES (NULL,@DateCreated,@UserId,@EventId,@Time,null,@Position,@AgeCategory,@Gender,0,@AgeGrade)
