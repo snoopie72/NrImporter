@@ -125,7 +125,7 @@ namespace Northernrunners.ImportLibrary.Service
                 _calculate.Call(_context.Globals, gender, Convert.ToDouble(age), Convert.ToDouble(distance/1000),
                     time.TotalSeconds).Unbox<object>();
             var resultString = Convert.ToString(result);
-            return Convert.ToDouble(resultString);
+            return Convert.ToDouble(resultString.Replace(".", ","));
         }
 
         private static int CalculateTime(TimeSpan time)

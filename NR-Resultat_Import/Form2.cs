@@ -12,7 +12,7 @@ namespace NR_Resultat_Import
 {
     public partial class Form2 : Form
     {
-        private readonly ICollection<UserEventInfo> _deltakere;
+        private ICollection<UserEventInfo> _deltakere;
         private readonly EventResultHandler _eventResultHandler;
         public Form2(ICollection<UserEventInfo> deltakere, EventResultHandler handler)
         {
@@ -29,7 +29,7 @@ namespace NR_Resultat_Import
                 //var x = new MockedEventService();
                 //textBox1.Text = x.GetEvents("adsf", 2016).ToList().FirstOrDefault().Id1.ToString();
                 //List<Event> eventer = eventService.GetEvents("adsf", DateTime.Now.Year).ToList();
-                var eventer = _eventResultHandler.GetEvents(new DateTime(2012, 1, 1), DateTime.Now);
+                var eventer = _eventResultHandler.GetEvents(new DateTime(2015, 5, 10), new DateTime(2015, 10, 31)); //DateTime.Now
                 if (eventer.Count >  0)
                 {
                     label2.Text = $"ID={eventer.First().Id}";
@@ -65,13 +65,15 @@ namespace NR_Resultat_Import
         {
             try
             {
-                this.Cursor = Cursors.WaitCursor;
+                btnSubmitResults.Enabled = false;
+                this._deltakere = (ICollection<UserEventInfo>)((BindingSource)dataGridView1.DataSource).List;
+                Cursor.Current = Cursors.WaitCursor;
                 Event ev = (Event)listBox1.SelectedItem;
                 this.backgroundWorker1.RunWorkerAsync(ev);
             }
             finally
             {
-                this.Cursor = Cursors.Default;
+                Cursor.Current = Cursors.Default;
             }
         }
 
