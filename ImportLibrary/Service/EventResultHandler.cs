@@ -110,9 +110,19 @@ namespace Northernrunners.ImportLibrary.Service
                 var userId = itemToDelete.UserId;
                 var user = _userService.FindUser(userId);
 
-                if (user == null) continue;
+                if (user == null)
+                {
+                    _eventService.DeleteTempResult(itemToDelete);
+                    continue;
+                };
                 result.User = user;
                 var ev = _eventService.GetEvent(eventId);
+                // Event has been deleted
+                if (ev == null)
+                {
+                    _eventService.DeleteTempResult(itemToDelete);
+                    continue;
+                }
                 var eventResult = new EventResult
                 {
                     Event = ev,
@@ -126,6 +136,7 @@ namespace Northernrunners.ImportLibrary.Service
 
                 _eventService.AddEventResults(eventResult);
                 _eventService.DeleteTempResult(itemToDelete);
+
             }
         }
 

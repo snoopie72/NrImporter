@@ -101,8 +101,7 @@ namespace Northernrunners.ImportLibrary.Service.Datalayer
                             Id = Convert.ToInt32(d["id"])
                         };
                     returnList.Add(x2);
-                    stopwatch.Stop();
-                    Console.WriteLine("Time: " + stopwatch.ElapsedMilliseconds);
+                    stopwatch.Stop();                    
 
                 }
                 return returnList;
@@ -212,7 +211,7 @@ namespace Northernrunners.ImportLibrary.Service.Datalayer
                 Id = Convert.ToInt32(row["id"]),
                 Registered = Convert.ToDateTime(row["registered"]),
                 UserId = Convert.ToInt32(row["userid"]),
-                EventId = Convert.ToInt32(row["userid"])
+                EventId = Convert.ToInt32(row["eventid"])
             }).ToList();
 
         }
