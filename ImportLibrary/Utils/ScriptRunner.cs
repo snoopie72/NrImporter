@@ -32,7 +32,8 @@ namespace Northernrunners.ImportLibrary.Utils
                 _calculate.Call(_context.Globals, gender, Convert.ToDouble(age), Convert.ToDouble(distance / 1000),
                     time.TotalSeconds).Unbox<object>();
             var resultString = Convert.ToString(result);
-            return Convert.ToDouble(resultString, new CultureInfo("nb-NO"));
+            var converted = Convert.ToDouble(resultString, new CultureInfo("en-GB"));
+            return converted;
         }
     }
 }
