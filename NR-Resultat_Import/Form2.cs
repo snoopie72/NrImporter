@@ -75,6 +75,7 @@ namespace NR_Resultat_Import
             finally
             {
                 Cursor.Current = Cursors.Default;
+                btnSubmitResults.Enabled = true;
             }
         }
 
