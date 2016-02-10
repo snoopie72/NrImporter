@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -27,13 +28,11 @@ namespace Northernrunners.ImportLibrary.Utils
 
         public double CalculateAgeGrade(int age, double distance, TimeSpan time, string gender)
         {
-            var cultureInfo = Thread.CurrentThread.CurrentCulture;
-            Console.WriteLine(cultureInfo);
             var result =
                 _calculate.Call(_context.Globals, gender, Convert.ToDouble(age), Convert.ToDouble(distance / 1000),
                     time.TotalSeconds).Unbox<object>();
             var resultString = Convert.ToString(result);
-            return Convert.ToDouble(resultString);
+            return Convert.ToDouble(resultString, new CultureInfo("nb-NO"));
         }
     }
 }
