@@ -105,6 +105,7 @@ namespace Northernrunners.ImportLibrary.Service
             var itemsToDelete = (from tempResult in tempResults let userId = tempResult.UserId let resultHasInvalidUser = invalidUsers.FirstOrDefault(t => t.Id.Equals(userId)) where resultHasInvalidUser == null select tempResult).ToList();
             foreach (var itemToDelete in itemsToDelete)
             {
+                Console.WriteLine("------------------------");
                 var result = Tools.Deserializate<Result>(itemToDelete.Data);
                 var eventId = itemToDelete.EventId;
                 var userId = itemToDelete.UserId;
@@ -112,6 +113,7 @@ namespace Northernrunners.ImportLibrary.Service
 
                 if (user == null)
                 {
+                    Console.WriteLine("Invalid user, deleting: " + userId);
                     _eventService.DeleteTempResult(itemToDelete);
                     continue;
                 };
@@ -120,6 +122,7 @@ namespace Northernrunners.ImportLibrary.Service
                 // Event has been deleted
                 if (ev == null)
                 {
+                    Console.WriteLine("Invalid event: " + eventId + "; User: " + user.Name);
                     _eventService.DeleteTempResult(itemToDelete);
                     continue;
                 }
@@ -136,6 +139,9 @@ namespace Northernrunners.ImportLibrary.Service
 
                 _eventService.AddEventResults(eventResult);
                 _eventService.DeleteTempResult(itemToDelete);
+                Console.WriteLine("Added entry for user: " + user.Name);
+                Console.WriteLine("Event: " + ev.DisplayName);
+                
 
             }
         }

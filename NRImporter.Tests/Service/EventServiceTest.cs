@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using Northernrunners.ImportLibrary.Excel;
 using Northernrunners.ImportLibrary.Poco;
@@ -70,6 +71,7 @@ namespace NRImporter.Tests.Service
             _handler.UpdateTempResults();
         }
 
+        [TestCase()]
         [Test]
         public void TestLoadMembers()
         {

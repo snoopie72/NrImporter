@@ -85,6 +85,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Utils\ScriptRunnerTest.cs" />
     <Compile Include="Utils\ToolsTest.cs" />
   </ItemGroup>
   <ItemGroup>

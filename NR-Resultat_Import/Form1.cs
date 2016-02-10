@@ -1,8 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Configuration;
+using System.Globalization;
 using System.Windows.Forms;
 using System.IO;
+using System.Threading;
 using Northernrunners.ImportLibrary.Excel;
 using Northernrunners.ImportLibrary.Service;
 using Northernrunners.ImportLibrary.Service.Datalayer;
@@ -14,6 +16,7 @@ namespace NR_Resultat_Import
         private readonly EventResultHandler _handler;
         public Form1()
         {
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("nn-NO");
             var sqlDirectService = new SqlDirectService(ConfigurationManager.ConnectionStrings["db"].ConnectionString);
             var datalayerService = new DatalayerService(sqlDirectService);
             var eventService = new EventService(datalayerService);

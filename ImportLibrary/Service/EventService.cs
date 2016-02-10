@@ -15,19 +15,12 @@ namespace Northernrunners.ImportLibrary.Service
 {
     public class EventService:IEventService
     {
-        private Random _rnd;
         private readonly IDatalayerService _resultDataService;
-        private readonly CSharp.Context _context;
-        private readonly FunctionObject _calculate;
+        private readonly ScriptRunner _scriptRunner;
         public EventService(IDatalayerService resultDataService)
         {
-            _rnd = new Random();
             _resultDataService = resultDataService;
-            _context = new IronJS.Hosting.CSharp.Context();
-
-            var file = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources/calculate.js");
-            _context.ExecuteFile(file);
-            _calculate = _context.Globals.GetT<FunctionObject>("calculate");
+            _scriptRunner = new ScriptRunner();
         }
     
 
@@ -115,18 +108,10 @@ namespace Northernrunners.ImportLibrary.Service
         {
             var age = user.DateOfBirth.Age(DateTime.Now);
             var distance = @event.Distance;
-            var result = CalculateAge(age, distance, time, user.Gender);
+            var result = _scriptRunner.CalculateAgeGrade(age, distance, time, user.Gender);
             return result;
         }
 
-        private double CalculateAge(int age, double distance, TimeSpan time, string gender)
-        {
-            var result =
-                _calculate.Call(_context.Globals, gender, Convert.ToDouble(age), Convert.ToDouble(distance/1000),
-                    time.TotalSeconds).Unbox<object>();
-            var resultString = Convert.ToString(result);
-            return Convert.ToDouble(resultString.Replace(".", ","));
-        }
 
         private static int CalculateTime(TimeSpan time)
         {

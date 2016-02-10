@@ -18,7 +18,6 @@ namespace Northernrunners.ImportLibrary.Service
         public SqlDirectService(string connectionString)
         {
             _connectionString = connectionString;
-            Console.WriteLine(_connectionString);
         }
 
         /// <summary>
