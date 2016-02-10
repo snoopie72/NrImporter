@@ -101,6 +101,7 @@
     <Compile Include="Service\Datalayer\SqlDirectService.cs" />
     <Compile Include="Service\TemporaryResultService.cs" />
     <Compile Include="Service\UserService.cs" />
+    <Compile Include="Utils\ScriptRunner.cs" />
     <Compile Include="Utils\Tools.cs" />
   </ItemGroup>
   <ItemGroup>
