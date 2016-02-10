@@ -68,6 +68,7 @@ namespace NR_Resultat_Import
                 btnSubmitResults.Enabled = false;
                 this._deltakere = (ICollection<UserEventInfo>)((BindingSource)dataGridView1.DataSource).List;
                 Cursor.Current = Cursors.WaitCursor;
+                Application.DoEvents();
                 Event ev = (Event)listBox1.SelectedItem;
                 this.backgroundWorker1.RunWorkerAsync(ev);
             }
