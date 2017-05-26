@@ -33,7 +33,17 @@ namespace Northernrunners.ImportLibrary.Utils
         {
             try
             {
-                return DateTime.ParseExact(date, "dd MMM yyyy", CultureInfo.GetCultureInfo("no-NO"));
+                return DateTime.ParseExact(date, "dd MMM yyyy", CultureInfo.GetCultureInfo("en-GB"));
+            }
+            catch (System.FormatException)
+            {
+                date = date.Replace("mai", "May");
+                date = date.Replace("okt", "Oct");
+                date = date.Replace("des", "Dec");
+                date = date.Replace("Mai", "May");
+                date = date.Replace("Okt", "Oct");
+                date = date.Replace("Des", "Dec");
+                return DateTime.ParseExact(date, "dd MMM yyyy", CultureInfo.GetCultureInfo("en-GB"));
             }
             catch (Exception exp)
             {

@@ -106,7 +106,7 @@ namespace Northernrunners.ImportLibrary.Service
 
         private double GetAgeGrade(User user, TimeSpan time, Event @event)
         {
-            var age = user.DateOfBirth.Age(DateTime.Now);
+            var age = user.DateOfBirth.Age(@event.Date);
             var distance = @event.Distance;
             var result = _scriptRunner.CalculateAgeGrade(age, distance, time, user.Gender);
             return result;
@@ -125,7 +125,7 @@ namespace Northernrunners.ImportLibrary.Service
         private static string GetAgeCategory(User user, Event ev)
         {
             var age = ev.Date.Year - user.DateOfBirth.Year;
-            if (age < 20)
+            if (age < 18)
             {
                 return "J";
             } else if (age < 35)

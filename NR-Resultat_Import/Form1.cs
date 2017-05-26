@@ -27,7 +27,7 @@ namespace NR_Resultat_Import
 
         private void button1_Click(object sender, EventArgs e)
         {
-            openFileDialog1.DefaultExt = ".csv"; //virker ikke
+            openFileDialog1.DefaultExt = "*.csv"; //virker ikke
             openFileDialog1.ShowDialog();
             
         }

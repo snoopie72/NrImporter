@@ -29,7 +29,7 @@ namespace NR_Resultat_Import
                 //var x = new MockedEventService();
                 //textBox1.Text = x.GetEvents("adsf", 2016).ToList().FirstOrDefault().Id1.ToString();
                 //List<Event> eventer = eventService.GetEvents("adsf", DateTime.Now.Year).ToList();
-                var eventer = _eventResultHandler.GetEvents(new DateTime(2015, 5, 10), new DateTime(2015, 10, 31)); //DateTime.Now
+                var eventer = _eventResultHandler.GetEvents(new DateTime(2016, 4, 1), new DateTime(2016, 7, 1)); //DateTime.Now
                 if (eventer.Count >  0)
                 {
                     label2.Text = $"ID={eventer.First().Id}";
