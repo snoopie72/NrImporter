@@ -66,6 +66,7 @@ namespace Northernrunners.ImportLibrary.Service
                 {
                     var dataObject = Tools.Serialize(result);
                     Console.WriteLine(dataObject);
+                    Console.WriteLine(result.User.Name);
                     Console.WriteLine(result.Time);
                     Console.WriteLine("*******");
                     var tempResult = new TempResultDto

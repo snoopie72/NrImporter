@@ -16,7 +16,7 @@ namespace NR_Resultat_Import
         private readonly EventResultHandler _handler;
         public Form1()
         {
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("nn-NO");
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("nb-NO");
             var sqlDirectService = new SqlDirectService(ConfigurationManager.ConnectionStrings["db"].ConnectionString);
             var datalayerService = new DatalayerService(sqlDirectService);
             var eventService = new EventService(datalayerService);
