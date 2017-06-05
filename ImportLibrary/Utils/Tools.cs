@@ -31,6 +31,7 @@ namespace Northernrunners.ImportLibrary.Utils
 
         public static DateTime ParseDate(string date)
         {
+            Console.WriteLine(date);
             try
             {
                 return DateTime.ParseExact(date, "dd MMM yyyy", CultureInfo.GetCultureInfo("en-GB"));
