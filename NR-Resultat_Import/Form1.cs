@@ -41,13 +41,29 @@ namespace NR_Resultat_Import
         {
             using (var stream = new FileStream(textBox1.Text, FileMode.Open))
             {
+                DateTime evtDate = getEventdate(stream.Name);
                 var deltaker = new ExcelLoader().LoadRaceResult(stream);
                 deltaker = _handler.FilterDeltakere(deltaker);
-                Form form2 = new Form2(deltaker, _handler);
+                Form form2 = new Form2(deltaker, _handler, evtDate);
                 form2.ShowDialog(this);
             }
             
             //this.Close();
+        }
+
+        private DateTime getEventdate(string filename)
+        {
+            DateTime evtDate = DateTime.MinValue;
+            try
+            {
+                filename = filename.Substring(filename.LastIndexOf(@"\") + 1);
+                int y = Convert.ToInt16(filename.Substring(0, 4));
+                int m = Convert.ToInt16(filename.Substring(5, 2));
+                int d = Convert.ToInt16(filename.Substring(8, 2));
+                evtDate = new DateTime(y, m, d);
+            }
+            catch {}
+            return evtDate;
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)

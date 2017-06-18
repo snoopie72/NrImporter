@@ -26,7 +26,7 @@ namespace Northernrunners.ImportLibrary.Service
 
         public ICollection<Event> GetEvents(DateTime @from, DateTime to)
         {
-            return GetAllEvents().Where(t => t.Date > from && t.Date < to).ToList();
+            return GetAllEvents().Where(t => t.Date >= from && t.Date <= to).ToList();
         }
 
         public ICollection<Event> GetEvents(string name, int year)

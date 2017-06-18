@@ -14,7 +14,8 @@ namespace NR_Resultat_Import
     {
         private ICollection<UserEventInfo> _deltakere;
         private readonly EventResultHandler _eventResultHandler;
-        public Form2(ICollection<UserEventInfo> deltakere, EventResultHandler handler)
+        private List<string> _stages;
+        public Form2(ICollection<UserEventInfo> deltakere, EventResultHandler handler, DateTime evtDate)
         {
             _eventResultHandler = handler;
             
@@ -24,10 +25,17 @@ namespace NR_Resultat_Import
             var source = new BindingSource(bindingList,null);
             dataGridView1.DataSource = source;
             dataGridView1.ReadOnly = false;
+            this._stages = getStages();
             if (deltakere.First() != null)
             {
-                //var x = new MockedEventService();
-                var eventer = _eventResultHandler.GetEvents(new DateTime(2015, 1, 1), new DateTime(2015, 12, 31)); //DateTime.Now
+                DateTime startDate = DateTime.MinValue;
+                DateTime endDate = DateTime.MaxValue;
+                if (evtDate > DateTime.MinValue)
+                {
+                    startDate = evtDate;
+                    endDate = evtDate.AddDays(1).AddSeconds(-1);
+                }
+                var eventer = _eventResultHandler.GetEvents(startDate, endDate);
                 if (eventer.Count >  0)
                 {
                     label2.Text = $"ID={eventer.First().Id}";
@@ -65,6 +73,16 @@ namespace NR_Resultat_Import
             {
                 btnSubmitResults.Enabled = false;
                 this._deltakere = (ICollection<UserEventInfo>)((BindingSource)dataGridView1.DataSource).List;
+                if (this._stages.Count>1)
+                {
+                    ICollection<UserEventInfo> temp = new List<UserEventInfo>();
+                    string stage = comboBoxStages.SelectedItem.ToString();
+                    foreach (var deltaker in this._deltakere.Where(deltaker => deltaker.Stage.Equals(stage)))
+                    {
+                        temp.Add(deltaker);
+                    }
+                    this._deltakere = temp;
+                }
                 Cursor.Current = Cursors.WaitCursor;
                 Application.DoEvents();
                 Event ev = (Event)listBox1.SelectedItem;
@@ -102,6 +120,46 @@ namespace NR_Resultat_Import
                 string stages = valid.Aggregate("", (current, stage) => current + stage + " - ");
                 var message = "Inneholder flere events.. " + stages;
                 MessageBox.Show(message, @"Feil i fil", MessageBoxButtons.OK);
+            }
+        }
+
+        private List<string> getStages()
+        {
+            SortedSet<string> stages = new SortedSet<string>();
+            foreach (DataGridViewRow r in dataGridView1.Rows)
+            {
+                try
+                {
+                    string stage = ((UserEventInfo)r.DataBoundItem).Stage;
+                    stages.Add(stage);
+                }
+                catch (NullReferenceException) { }
+            }
+            if (stages.Count>1)
+            {
+                comboBoxStages.Items.Clear();
+                foreach (string stage in stages)
+                {
+                    comboBoxStages.Items.Add(stage);
+                }
+                comboBoxStages.Visible = true;
+                LoadUsers.Enabled = false;
+                btnSubmitResults.Enabled = false;
+            }
+            return stages.ToList<string>();
+        }
+
+        private void comboBoxStages_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBoxStages.SelectedItem.ToString() != "Velg stage")
+            {
+                LoadUsers.Enabled = true;
+                btnSubmitResults.Enabled = true;
+            }
+            else
+            {
+                LoadUsers.Enabled = false;
+                btnSubmitResults.Enabled = false;
             }
         }
     }

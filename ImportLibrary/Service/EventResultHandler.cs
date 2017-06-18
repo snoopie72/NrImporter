@@ -58,15 +58,18 @@ namespace Northernrunners.ImportLibrary.Service
                 {
                     time = "0:" + time;
                 }
-                result.Time = TimeSpan.Parse(time);
-                // For å hindre at bogus tid blir lagt inn. Står 0.00 flere steder i importfil
-                if (result.Time.TotalSeconds > 10)
+                try
                 {
-                    
-                    results.Add(result);
+                    result.Time = TimeSpan.Parse(time);
+                    // For å hindre at bogus tid blir lagt inn. Står 0.00 flere steder i importfil
+                    if (result.Time.TotalSeconds > 10)
+                    {
+                        results.Add(result);
+                    }
                 }
-                
-
+                catch (Exception) {
+                    Console.WriteLine("Feil i tid: " + deltaker.Time + " (" + deltaker.Name + ")");
+                }
             }
             eventResult.Results = results;
             _eventService.AddEventResults(eventResult);
